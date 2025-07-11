@@ -1,8 +1,8 @@
 import { Component, type ReactNode } from 'react';
 
-export class SearchForm extends Component<{ClickButton:(e: React.FormEvent<HTMLFormElement>, name: string) => Promise<void>}> {
+export class SearchForm extends Component<{ClickButton:(name: string, e?: React.FormEvent<HTMLFormElement>) => Promise<void>}> {
   state = {
-    field: '',
+    field: localStorage.getItem('field') || '',
     
   };
   handleFieldChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +14,7 @@ export class SearchForm extends Component<{ClickButton:(e: React.FormEvent<HTMLF
   render(): ReactNode {
     return (
       <>
-        <form onSubmit = {(e)=>this.props.ClickButton(e, this.state.field)}className="search-form" action="">
+        <form onSubmit = {(e)=>this.props.ClickButton(this.state.field, e)}className="search-form" action="">
           <input onChange={this.handleFieldChange} value={this.state.field} className="search-form__input" type="text" />
           <button  className="search-form__button" type="submit">
             

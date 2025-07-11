@@ -9,15 +9,22 @@ export class RickAndMorty extends Component {
       results: [],
     },
   };
-  GetPersons = async (e: React.FormEvent<HTMLFormElement>, name: string) => {
-    e.preventDefault();
+  GetPersons = async (name: string, e?: React.FormEvent<HTMLFormElement>) => {
+    if(e){
+         e.preventDefault();
+    }
+   
+    localStorage.setItem('field', name)
     const res = await fetch(
       `https://rickandmortyapi.com/api/character/?name=${name}`,
     );
     const data = await res.json();
     this.setState({ info: data });
-    console.log(data);
+    
   };
+  componentDidMount() {
+    this.GetPersons(localStorage.getItem('field') || '')
+  }
 
   render() {
     return (
