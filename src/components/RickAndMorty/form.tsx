@@ -1,6 +1,6 @@
 import { Component, type ReactNode } from 'react';
 
-export class SearchForm extends Component<{ClickButton:(name: string) => Promise<void>}> {
+export class SearchForm extends Component<{ClickButton:(e: React.FormEvent<HTMLFormElement>, name: string) => Promise<void>}> {
   state = {
     field: '',
     
@@ -14,9 +14,9 @@ export class SearchForm extends Component<{ClickButton:(name: string) => Promise
   render(): ReactNode {
     return (
       <>
-        <form className="search-form" action="">
+        <form onSubmit = {(e)=>this.props.ClickButton(e, this.state.field)}className="search-form" action="">
           <input onChange={this.handleFieldChange} value={this.state.field} className="search-form__input" type="text" />
-          <button onClick={()=>this.props.ClickButton(this.state.field)} className="search-form__button" type="button">
+          <button  className="search-form__button" type="submit">
             
             <svg
               width="20"
