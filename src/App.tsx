@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { RickAndMorty } from './pages/RickAndMorty';
+import { ErrorBoundary } from './components/RickAndMorty/ErrorBoundary';
 
 export default class App extends Component {
   
@@ -7,7 +8,9 @@ export default class App extends Component {
   render() {
     return (
       <>
-      <RickAndMorty></RickAndMorty>
+      <ErrorBoundary>
+      <RickAndMorty />
+    </ErrorBoundary>
       </>
     );
   }

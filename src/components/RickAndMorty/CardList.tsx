@@ -7,15 +7,24 @@ type CardType = {
     image?: string;
   }[];
 };
-export class CardList extends Component<{ data: CardType }> {
+export class CardList extends Component<{error:string, data: CardType; isLoad: boolean }> {
   render() {
     return (
       <>
-        <ul className="card-list">
-          {this.props.data.results?.map((item, index) => (
-            <Card name={item.name} image={item.image}></Card>
-          ))}
-        </ul>
+        {this.props.isLoad && <div className="loader-container">
+            <span className="loader"></span> </div>}
+        {!this.props.isLoad && !this.props.error && (
+          <ul className="card-list">
+            {this.props.data.results?.map((item) => (
+              <Card name={item.name} image={item.image}></Card>
+            ))}
+          </ul>
+        )}
+        {this.props.error && 
+        !this.props.isLoad && (
+            <div className="error-container"><h1>{this.props.error}</h1></div>
+        )
+        }
       </>
     );
   }
