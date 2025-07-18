@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { SearchForm } from '../components/RickAndMorty/form';
 
 import { CardList } from '../components/RickAndMorty/CardList';
+import { SearchForm } from '../components/RickAndMorty/Form/Form';
 
 export class RickAndMorty extends Component {
   state = {

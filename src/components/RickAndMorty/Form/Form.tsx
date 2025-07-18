@@ -1,23 +1,34 @@
 import { Component, type ReactNode } from 'react';
 
-export class SearchForm extends Component<{ClickButton:(name: string, e?: React.FormEvent<HTMLFormElement>) => Promise<void>}> {
+export class SearchForm extends Component<{
+  ClickButton: (
+    name: string,
+    e?: React.FormEvent<HTMLFormElement>,
+  ) => Promise<void>;
+}> {
   state = {
     field: localStorage.getItem('field') || '',
-    
   };
-  handleFieldChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      field: e.target.value
+      field: e.target.value,
     });
-    
-  }
+  };
   render(): ReactNode {
     return (
       <>
-        <form onSubmit = {(e)=>this.props.ClickButton(this.state.field, e)}className="search-form" action="">
-          <input onChange={this.handleFieldChange} value={this.state.field} className="search-form__input" type="text" />
-          <button  className="search-form__button" type="submit">
-            
+        <form
+          onSubmit={(e) => this.props.ClickButton(this.state.field, e)}
+          className="search-form"
+          action=""
+        >
+          <input
+            onChange={this.handleFieldChange}
+            value={this.state.field}
+            className="search-form__input"
+            type="text"
+          />
+          <button className="search-form__button" type="submit">
             <svg
               width="20"
               height="20"
