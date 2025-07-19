@@ -18,6 +18,7 @@ export class SearchForm extends Component<{
     return (
       <>
         <form
+          role="form"
           onSubmit={(e) => this.props.ClickButton(this.state.field, e)}
           className="search-form"
           action=""

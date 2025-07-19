@@ -47,10 +47,10 @@ describe('SearchForm', () => {
   it('calls ClickButton on form submit', async () => {
     const { getByRole } = render(<SearchForm ClickButton={mockClickButton} />);
     const input = getByRole('textbox') as HTMLInputElement;
-    const button = getByRole('button');
+    const form = getByRole('form');
 
     fireEvent.change(input, { target: { value: 'search term' } });
-    fireEvent.click(button);
+    fireEvent.submit(form);
 
     expect(mockClickButton).toHaveBeenCalledWith(
       'search term',
@@ -64,10 +64,10 @@ describe('SearchForm', () => {
     });
     const { getByRole } = render(<SearchForm ClickButton={mockClickButton} />);
     const input = getByRole('textbox') as HTMLInputElement;
-    const button = getByRole('button');
+    const form = getByRole('form') as HTMLFormElement;
 
     fireEvent.change(input, { target: { value: 'search term' } });
-    fireEvent.click(button);
+    fireEvent.submit(form);
 
     expect(localStorage.getItem('field')).toBe('search term');
   });
@@ -76,11 +76,11 @@ describe('SearchForm', () => {
     const { getByRole } = render(<SearchForm ClickButton={mockClickButton} />);
 
     const input = getByRole('textbox') as HTMLInputElement;
-    const button = getByRole('button') as HTMLButtonElement;
+    const form = getByRole('form') as HTMLButtonElement;
 
     fireEvent.change(input, { target: { value: 'Rick Sanchez' } });
 
-    fireEvent.click(button);
+    fireEvent.submit(form);
 
     expect(mockClickButton).toHaveBeenCalledTimes(1);
     expect(mockClickButton).toHaveBeenCalledWith(
