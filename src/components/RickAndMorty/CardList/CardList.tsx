@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Card } from '../Card/Card';
+import { Spinner } from '../Spinner/Spinner';
 
 type CardType = {
   results: {
@@ -15,11 +16,7 @@ export class CardList extends Component<{
   render() {
     return (
       <>
-        {this.props.isLoad && (
-          <div className="loader-container">
-            <span data-testid="loader" className="loader"></span>{' '}
-          </div>
-        )}
+        {this.props.isLoad && <Spinner></Spinner>}
         {!this.props.isLoad &&
           !this.props.error &&
           this.props.data.results.length > 0 && (
