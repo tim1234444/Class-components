@@ -448,11 +448,12 @@ describe('RickAndMorty component', () => {
     ],
   };
   beforeEach(() => {
+    vi.restoreAllMocks();
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
     localStorage.clear();
     cleanup();
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('renders characters from API (success case) and Makes initial API call on component mount', async () => {
@@ -478,7 +479,13 @@ describe('RickAndMorty component', () => {
     );
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
-  it('Handles API error responses', async () => {
+  it('Handles API error responses(404)', async () => {
+    fetchMock.mockResponseOnce('', { status: 404 });
+    render(<RickAndMorty />);
+
+    expect(await screen.findByRole('error')).toBeInTheDocument();
+  });
+  it('Handles API error responses(not404)', async () => {
     fetchMock.mockResponseOnce('', { status: 404 });
     render(<RickAndMorty />);
 
