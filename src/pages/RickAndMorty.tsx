@@ -23,17 +23,16 @@ export class RickAndMorty extends Component {
       const res = await fetch(
         `https://rickandmortyapi.com/api/character/?name=${name}`,
       );
-      const data = await res.json();
 
       if (res.status == 404) {
         this.setState({ info: { results: [] }, isLoad: false, error: '' });
       } else if (res.status != 200) {
         throw new Error('Sorry, Error');
       } else if (res.status == 200) {
+        const data = await res.json();
         this.setState({ info: data, isLoad: false, error: '' });
+        console.log(data);
       }
-
-      console.log(data);
     } catch (err: unknown) {
       if (err instanceof Error) {
         this.setState({ isLoad: false, error: err.message });

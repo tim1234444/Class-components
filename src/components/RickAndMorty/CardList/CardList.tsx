@@ -31,14 +31,14 @@ export class CardList extends Component<{
             </ul>
           )}
         {this.props.error && !this.props.isLoad && (
-          <div className="error-container">
+          <div role="error" className="error-container">
             <h1>{this.props.error}</h1>
           </div>
         )}
         {!this.props.isLoad &&
           !this.props.error &&
           this.props.data.results.length === 0 && (
-            <div className="error-container">
+            <div role="error" className="error-container">
               <h1>There is nothing here</h1>
             </div>
           )}
