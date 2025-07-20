@@ -1,4 +1,4 @@
-import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
@@ -29,12 +29,11 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="error-fallback">
-        <h2>Произошла ошибка</h2>
-        <button className="retry-button" onClick={this.handleRetry}>
-          Попробовать снова
-        </button>
-      </div>
-      
+          <h2>Произошла ошибка</h2>
+          <button className="retry-button" onClick={this.handleRetry}>
+            Попробовать снова
+          </button>
+        </div>
       );
     }
 

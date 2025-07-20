@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { SearchForm } from '../components/RickAndMorty/form';
 
-import { CardList } from '../components/RickAndMorty/CardList';
+import { CardList } from '../components/RickAndMorty/CardList/CardList';
+import { SearchForm } from '../components/RickAndMorty/Form/Form';
 
 export class RickAndMorty extends Component {
   state = {
@@ -23,14 +23,16 @@ export class RickAndMorty extends Component {
       const res = await fetch(
         `https://rickandmortyapi.com/api/character/?name=${name}`,
       );
-      const data = await res.json();
 
       if (res.status == 404) {
-        throw new Error(`There is nothing here`);
+        this.setState({ info: { results: [] }, isLoad: false, error: '' });
+      } else if (res.status != 200) {
+        throw new Error('Sorry, Error');
+      } else if (res.status == 200) {
+        const data = await res.json();
+        this.setState({ info: data, isLoad: false, error: '' });
+        console.log(data);
       }
-
-      console.log(data);
-      this.setState({ info: data, isLoad: false, error: '' });
     } catch (err: unknown) {
       if (err instanceof Error) {
         this.setState({ isLoad: false, error: err.message });
