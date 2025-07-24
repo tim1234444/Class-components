@@ -1,19 +1,26 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CardList } from '../components/RickAndMorty/CardList/CardList';
 import { SearchForm } from '../components/RickAndMorty/Form/Form';
 
-export class RickAndMorty extends Component {
-  state = {
-    info: {
-      results: [],
-    },
-    isLoad: false,
-    error: '',
-    shouldCrash: false,
-  };
-  GetPersons = async (name: string, e?: React.FormEvent<HTMLFormElement>) => {
-    this.setState({ isLoad: true });
+type CardType = {
+  results: {
+    name: string;
+    image?: string;
+  }[];
+};
+
+export function RickAndMorty() {
+  const [info, SetInfo] = useState<CardType>({ results: [] });
+  const [isLoad, SetIsLoad] = useState<boolean>(false);
+  const [error, SetError] = useState<string>('');
+  const [shouldCrash, SetShouldCrash] = useState<boolean>(false);
+
+  async function GetPersons(
+    name: string,
+    e?: React.FormEvent<HTMLFormElement>,
+  ) {
+    SetIsLoad(true);
     if (e) {
       e.preventDefault();
     }
@@ -25,49 +32,45 @@ export class RickAndMorty extends Component {
       );
 
       if (res.status == 404) {
-        this.setState({ info: { results: [] }, isLoad: false, error: '' });
+        SetIsLoad(false);
+        SetError('');
+        SetInfo({ results: [] });
       } else if (res.status != 200) {
         throw new Error('Sorry, Error');
       } else if (res.status == 200) {
         const data = await res.json();
-        this.setState({ info: data, isLoad: false, error: '' });
+        SetIsLoad(false);
+        SetError('');
+        SetInfo(data);
         console.log(data);
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        this.setState({ isLoad: false, error: err.message });
+        SetIsLoad(false);
+        SetError(err.message);
         console.error('Fetch error:', err);
       }
     }
-  };
-  componentDidMount() {
-    this.GetPersons(localStorage.getItem('field') || '');
   }
+  useEffect(() => {
+    GetPersons(localStorage.getItem('field') || '');
+  }, []);
 
-  render() {
-    if (this.state.shouldCrash) {
-      throw new Error('Тестовая ошибка в render()');
-    }
-    return (
-      <>
-        <header className="header">
-          <SearchForm ClickButton={this.GetPersons}></SearchForm>
-        </header>
-        <main>
-          <CardList
-            error={this.state.error}
-            isLoad={this.state.isLoad}
-            data={this.state.info}
-          ></CardList>
-          <button
-            className="error-button"
-            onClick={() => this.setState({ shouldCrash: true })}
-          >
-            Вызвать ошибку
-          </button>
-        </main>
-        <footer></footer>
-      </>
-    );
+  if (shouldCrash) {
+    throw new Error('Тестовая ошибка в render()');
   }
+  return (
+    <>
+      <header className="header">
+        <SearchForm ClickButton={GetPersons}></SearchForm>
+      </header>
+      <main>
+        <CardList error={error} isLoad={isLoad} data={info}></CardList>
+        <button className="error-button" onClick={() => SetShouldCrash(true)}>
+          Вызвать ошибку
+        </button>
+      </main>
+      <footer></footer>
+    </>
+  );
 }
