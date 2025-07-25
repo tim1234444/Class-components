@@ -1,86 +1,64 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
 type Props = {
   PageNumber: number;
-  onClick: (
-    page: string,
-    name: string,
-    e?: React.FormEvent<HTMLFormElement>,
-  ) => Promise<void>;
 };
 
-export function Pagination({ onClick, PageNumber }: Props) {
-  const [numbers, SetNumbers] = useState<number[]>();
+export function Pagination({ PageNumber }: Props) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const currentPage = isNaN(page) ? 1 : page;
+
+  const [numbers, SetNumbers] = useState<number[]>([]);
   useEffect(() => {
-    if (PageNumber > 0) {
-      const nums = [...Array(PageNumber).keys()].map((i) => i + 1);
-      SetNumbers(nums);
-    } else {
-      SetNumbers([]);
+    const pages = new Set<number>();
+
+    if (currentPage >= 1 && currentPage <= PageNumber) {
+      pages.add(currentPage);
     }
-  }, [PageNumber]);
-  console.log(numbers);
+
+    if (currentPage - 1 >= 1) {
+      pages.add(currentPage - 1);
+    }
+
+    if (currentPage + 1 <= PageNumber) {
+      pages.add(currentPage + 1);
+    }
+    if (currentPage === 1 && currentPage + 2 <= PageNumber) {
+      pages.add(currentPage + 2);
+    }
+    console.log(PageNumber, currentPage);
+    if (PageNumber !== currentPage) {
+      pages.add(PageNumber);
+    }
+
+    if (1 !== currentPage) {
+      pages.add(1);
+    }
+
+    SetNumbers(Array.from(pages).sort((a, b) => a - b));
+  }, [PageNumber, currentPage]);
+
   if (PageNumber <= 0) return null;
 
   return (
     <>
       {numbers && (
         <div className="pagination">
-          {numbers.length <= 5 ? (
-            numbers.map((number) => (
-              <button className="pagination__button" key={number}>
-                {number}
-              </button>
-            ))
-          ) : (
-            <>
-              <button
-                onClick={() =>
-                  onClick('1', localStorage.getItem('field') || '')
-                }
-                className="pagination__button"
-                key={1}
-              >
-                {1}
-              </button>
-              <button
-                onClick={() =>
-                  onClick('2', localStorage.getItem('field') || '')
-                }
-                className="pagination__button"
-                key={2}
-              >
-                {2}
-              </button>
-              <span className="pagination__dots" key="dots">
-                ...
-              </span>
-              <button
-                onClick={() =>
-                  onClick(
-                    String(numbers.length - 1),
-                    localStorage.getItem('field') || '',
-                  )
-                }
-                className="pagination__button"
-                key={numbers.length - 1}
-              >
-                {numbers.length - 1}
-              </button>
-              <button
-                onClick={() =>
-                  onClick(
-                    String(numbers.length),
-                    localStorage.getItem('field') || '',
-                  )
-                }
-                className="pagination__button"
-                key={numbers.length}
-              >
-                {numbers.length}
-              </button>
-            </>
-          )}
+          {numbers.map((number) => (
+            <button
+              onClick={() => {
+                navigate(`/?page=${number}`);
+              }}
+              className={`pagination__button ${number === currentPage ? 'pagination__button--active' : ''}`}
+              key={number}
+            >
+              {number}
+            </button>
+          ))}
         </div>
       )}
     </>

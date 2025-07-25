@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 type Props = {
   ClickButton: (
     page: string,
@@ -7,6 +8,8 @@ type Props = {
   ) => Promise<void>;
 };
 export function SearchForm({ ClickButton }: Props) {
+  const [, setSearchParams] = useSearchParams();
+
   const [field, SetField] = useState(localStorage.getItem('field') || '');
 
   function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -17,7 +20,13 @@ export function SearchForm({ ClickButton }: Props) {
     <>
       <form
         role="form"
-        onSubmit={(e) => ClickButton('1', field, e)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          localStorage.setItem('field', field);
+          setSearchParams({ page: '1' });
+          // вызываю ClickButton на случай если page и так равно 1
+          ClickButton('1', field);
+        }}
         className="search-form"
         action=""
       >
