@@ -1,25 +1,24 @@
-.search-form__input{
+.search-form__input {
   border-radius: 32px;
   border: solid 1px rgb(31, 29, 27);
   width: 100%;
-
 }
-.search-form{
+.search-form {
   position: relative;
   max-width: 400px;
   width: 100%;
 }
-.search-form__button{
+.search-form__button {
   position: absolute;
   right: 15px;
-  top:3px;
+  top: 3px;
   background-color: transparent;
   cursor: pointer;
 }
-body{
+body {
   padding: 20px;
 }
-.header{
+.header {
   display: flex;
   justify-content: center;
 }
@@ -71,7 +70,7 @@ body{
   width: 48px;
   height: 48px;
   border: 5px solid #6ebeff;
-  border-bottom-color: #337AB7;
+  border-bottom-color: #337ab7;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -85,8 +84,9 @@ body{
   100% {
     transform: rotate(360deg);
   }
-} 
-.loader-container, .error-container{
+}
+.loader-container,
+.error-container {
   min-height: calc(100vh - 27.6px - 40px);
   display: flex;
   align-items: center;
@@ -149,4 +149,38 @@ body{
 .retry-button:active {
   background-color: #388e3c;
   transform: scale(0.98);
+}
+.pagination__button {
+  background-color: white;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pagination__button:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination__button--active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border-color: #007bff;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+.pagination__dots {
+  display: flex;
+  align-items: flex-end;
+  height: 40px; /* подстрой под высоту кнопок */
 }
