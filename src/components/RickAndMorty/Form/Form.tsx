@@ -1,6 +1,7 @@
 import { useState } from 'react';
 type Props = {
   ClickButton: (
+    page: string,
     name: string,
     e?: React.FormEvent<HTMLFormElement>,
   ) => Promise<void>;
@@ -16,7 +17,7 @@ export function SearchForm({ ClickButton }: Props) {
     <>
       <form
         role="form"
-        onSubmit={(e) => ClickButton(field, e)}
+        onSubmit={(e) => ClickButton('1', field, e)}
         className="search-form"
         action=""
       >
