@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 type Props = {
+  closeDetail: () => void;
   PageNumber: number;
 };
 
-export function Pagination({ PageNumber }: Props) {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+export function Pagination({ closeDetail, PageNumber }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const page = parseInt(searchParams.get('page') || '1', 10);
   const currentPage = isNaN(page) ? 1 : page;
@@ -51,7 +51,8 @@ export function Pagination({ PageNumber }: Props) {
           {numbers.map((number) => (
             <button
               onClick={() => {
-                navigate(`/?page=${number}`);
+                closeDetail();
+                setSearchParams({ page: String(number) });
               }}
               className={`pagination__button ${number === currentPage ? 'pagination__button--active' : ''}`}
               key={number}
