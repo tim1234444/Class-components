@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Component } from 'react';
 import { RickAndMorty } from '../../../pages/RickAndMorty';
-
+import { MemoryRouter } from 'react-router';
 class BrokenComponent extends Component {
   render() {
     throw new Error('Error');
@@ -51,12 +51,15 @@ describe('ErrorBoundary', () => {
 
   it('Triggers error boundary fallback UI', () => {
     render(
-      <ErrorBoundary>
-        <RickAndMorty />
-      </ErrorBoundary>,
+      <MemoryRouter>
+        {' '}
+        <ErrorBoundary>
+          <RickAndMorty />
+        </ErrorBoundary>
+      </MemoryRouter>,
     );
 
-    const button = screen.getByRole('button', { name: /вызвать ошибку/i });
+    const button = screen.getByRole('button', { name: /Вызвать ошибку/i });
 
     fireEvent.click(button);
 
@@ -67,9 +70,12 @@ describe('ErrorBoundary', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
-      <ErrorBoundary>
-        <RickAndMorty />
-      </ErrorBoundary>,
+      <MemoryRouter>
+        {' '}
+        <ErrorBoundary>
+          <RickAndMorty />
+        </ErrorBoundary>
+      </MemoryRouter>,
     );
 
     const button = screen.getByRole('button', { name: /вызвать ошибку/i });

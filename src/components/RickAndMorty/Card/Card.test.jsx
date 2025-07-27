@@ -1,10 +1,15 @@
 /// <reference types="vitest/globals" />
 import { render, screen } from '@testing-library/react';
 import { Card } from './Card';
+import { MemoryRouter } from 'react-router';
 
 describe('Card Component', () => {
   it('Displays item name and image when props are provided', () => {
-    render(<Card name="Rick Sanchez" image="rick.png" />);
+    render(
+      <MemoryRouter>
+        <Card name="Rick Sanchez" image="rick.png" id={1} />
+      </MemoryRouter>,
+    );
 
     const nameElement = screen.getByTestId('description');
     const imageElement = screen.getByTestId('image');
@@ -17,7 +22,11 @@ describe('Card Component', () => {
   });
 
   it('Handles missing image gracefully', () => {
-    render(<Card name="Morty Smith" />);
+    render(
+      <MemoryRouter>
+        <Card name="Morty Smith" />
+      </MemoryRouter>,
+    );
 
     const nameElement = screen.getByTestId('description');
     const imageElement = screen.queryByTestId('image');

@@ -2,10 +2,13 @@
 import { render, screen } from '@testing-library/react';
 import { CardList } from './CardList';
 import { mockedData } from '../../../__test__/mockedData';
+import { MemoryRouter } from 'react-router';
 describe('CardList', () => {
   it('Renders correct number of items when data is provided', () => {
     const { getAllByTestId } = render(
-      <CardList isLoad={false} error="" data={mockedData} />,
+      <MemoryRouter>
+        <CardList isLoad={false} error="" data={mockedData} />
+      </MemoryRouter>,
     );
 
     const cards = getAllByTestId('card');
@@ -14,7 +17,13 @@ describe('CardList', () => {
 
   it('Displays "no results" message when data array is empty', () => {
     render(
-      <CardList isLoad={false} error="" data={{ results: [] }}></CardList>,
+      <MemoryRouter>
+        <CardList
+          isLoad={false}
+          error=""
+          data={{ info: { count: -1, pages: -1 }, results: [] }}
+        ></CardList>
+      </MemoryRouter>,
     );
     const errorElement = screen.getByText('There is nothing here');
     const list = screen.queryByRole('list');
@@ -23,14 +32,22 @@ describe('CardList', () => {
   });
 
   it('Shows loading state while fetching data', () => {
-    render(<CardList isLoad={true} error="" data={{ results: [] }}></CardList>);
+    render(
+      <CardList
+        isLoad={true}
+        error=""
+        data={{ info: { count: -1, pages: -1 }, results: [] }}
+      ></CardList>,
+    );
     const loader = screen.getByTestId('loader');
     expect(loader).toBeInTheDocument();
   });
 
   it('Correctly displays item names and descriptions', () => {
     const { getAllByTestId } = render(
-      <CardList isLoad={false} error="" data={mockedData} />,
+      <MemoryRouter>
+        <CardList isLoad={false} error="" data={mockedData} />
+      </MemoryRouter>,
     );
 
     const names = getAllByTestId('description');

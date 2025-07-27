@@ -5,8 +5,8 @@ import './reset.css';
 import App from './App';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Detail } from './components/RickAndMorty/Detail/Detail';
-import AboutPage from './pages/AboutPage';
-import NotFound from './pages/NotFound';
+import AboutPage from './pages/AboutPage/AboutPage';
+import NotFound from './pages/NotFound/NotFound';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
