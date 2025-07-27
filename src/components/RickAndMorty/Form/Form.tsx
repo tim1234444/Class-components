@@ -18,6 +18,8 @@ export function SearchForm() {
           onSubmit={(e) => {
             e.preventDefault();
             localStorage.setItem('field', field);
+            localStorage.setItem('page', '1');
+            localStorage.setItem('id', '');
 
             setSearchParams({ page: '1' });
           }}
