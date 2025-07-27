@@ -1,31 +1,34 @@
-import { Component, type ReactNode } from 'react';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 
-export class SearchForm extends Component<{
-  ClickButton: (
-    name: string,
-    e?: React.FormEvent<HTMLFormElement>,
-  ) => Promise<void>;
-}> {
-  state = {
-    field: localStorage.getItem('field') || '',
-  };
-  handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      field: e.target.value,
-    });
-  };
-  render(): ReactNode {
-    return (
-      <>
+export function SearchForm() {
+  const [, setSearchParams] = useSearchParams();
+
+  const [field, SetField] = useState(localStorage.getItem('field') || '');
+
+  function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
+    SetField(e.target.value);
+  }
+
+  return (
+    <>
+      <div className="form-container">
         <form
           role="form"
-          onSubmit={(e) => this.props.ClickButton(this.state.field, e)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            localStorage.setItem('field', field);
+            localStorage.setItem('page', '1');
+            localStorage.setItem('id', '');
+
+            setSearchParams({ page: '1' });
+          }}
           className="search-form"
           action=""
         >
           <input
-            onChange={this.handleFieldChange}
-            value={this.state.field}
+            onChange={handleFieldChange}
+            value={field}
             className="search-form__input"
             type="text"
           />
@@ -44,7 +47,7 @@ export class SearchForm extends Component<{
             </svg>{' '}
           </button>
         </form>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 }

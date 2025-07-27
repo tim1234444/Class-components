@@ -1,25 +1,25 @@
-.search-form__input{
+main {
+  padding: 20px;
+}
+.search-form__input {
   border-radius: 32px;
   border: solid 1px rgb(31, 29, 27);
   width: 100%;
-
 }
-.search-form{
+.search-form {
   position: relative;
   max-width: 400px;
   width: 100%;
 }
-.search-form__button{
+.search-form__button {
   position: absolute;
   right: 15px;
-  top:3px;
+  top: 3px;
   background-color: transparent;
   cursor: pointer;
 }
-body{
-  padding: 20px;
-}
-.header{
+
+.header {
   display: flex;
   justify-content: center;
 }
@@ -61,6 +61,7 @@ body{
   color: #333;
 }
 .card-list {
+  flex-grow: 2;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
@@ -71,7 +72,7 @@ body{
   width: 48px;
   height: 48px;
   border: 5px solid #6ebeff;
-  border-bottom-color: #337AB7;
+  border-bottom-color: #337ab7;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
@@ -85,8 +86,11 @@ body{
   100% {
     transform: rotate(360deg);
   }
-} 
-.loader-container, .error-container{
+}
+.loader-container,
+.error-container {
+  width: 100%;
+
   min-height: calc(100vh - 27.6px - 40px);
   display: flex;
   align-items: center;
@@ -149,4 +153,192 @@ body{
 .retry-button:active {
   background-color: #388e3c;
   transform: scale(0.98);
+}
+.pagination__button {
+  background-color: white;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pagination__button:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination__button--active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border-color: #007bff;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+.pagination__dots {
+  display: flex;
+  align-items: flex-end;
+  height: 40px;
+}
+.character-card {
+  flex-grow: 0;
+  height: 700px;
+  width: 400px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fdfdfd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  gap: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.character-image {
+  width: 250px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.character-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.character-details h2 {
+  margin-bottom: 15px;
+  font-size: 28px;
+  color: #333;
+}
+
+.character-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.character-details li {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #555;
+}
+
+.character-details strong {
+  color: #222;
+}
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+
+  background-color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.content-container {
+  display: flex;
+  gap: 10px;
+}
+.about-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.about-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.about-photo {
+  width: 180px;
+  height: 180px;
+  background-color: #ddd;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 14px;
+}
+
+.about-text {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f1f1f;
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar-logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar-links li a.active {
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+}
+.about-photo img {
+  object-fit: cover;
+  height: 100%;
+  border-radius: 12px;
+  width: 100%;
 }

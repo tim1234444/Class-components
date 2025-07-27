@@ -1,73 +1,144 @@
-import { Component } from 'react';
-
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router';
 import { CardList } from '../components/RickAndMorty/CardList/CardList';
 import { SearchForm } from '../components/RickAndMorty/Form/Form';
+import { Pagination } from '../components/RickAndMorty/Pagination/Pagination';
+import type {
+  FetchListData,
+  FetchPersonData,
+  GetPersonsParams,
+} from '../type/type';
+import { useRestoredSearchParamsFromLS } from '../hooks/useRestoreSearchParamsFromLS';
+import Layout from '../components/Layout';
 
-export class RickAndMorty extends Component {
-  state = {
-    info: {
-      results: [],
-    },
-    isLoad: false,
-    error: '',
-    shouldCrash: false,
-  };
-  GetPersons = async (name: string, e?: React.FormEvent<HTMLFormElement>) => {
-    this.setState({ isLoad: true });
-    if (e) {
-      e.preventDefault();
-    }
+export function RickAndMorty() {
+  const { page, id, field } = useRestoredSearchParamsFromLS();
 
-    localStorage.setItem('field', name);
+  const [personInfo, SetPersonInfo] = useState<FetchPersonData>();
+  const [isDetailVisible, setIsDetailVisible] = useState(false);
+  const [isPersonLoading, setIsPersonLoading] = useState<boolean>(false);
+  const [personError, SetPersonError] = useState<string>('');
+
+  const [isListLoading, setIsListLoading] = useState<boolean>(false);
+  const [listInfo, SetListInfo] = useState<FetchListData>({
+    info: { count: -1, pages: -1 },
+    results: [],
+  });
+  const [listError, SetListError] = useState<string>('');
+
+  const [shouldCrash, SetShouldCrash] = useState<boolean>(false);
+
+  async function fetchCharacterById(id: number) {
+    setIsDetailVisible(true);
+    setIsPersonLoading(true);
+
     try {
       const res = await fetch(
-        `https://rickandmortyapi.com/api/character/?name=${name}`,
+        `https://rickandmortyapi.com/api/character/${id}`,
       );
 
-      if (res.status == 404) {
-        this.setState({ info: { results: [] }, isLoad: false, error: '' });
-      } else if (res.status != 200) {
+      if (res.status === 404) {
+        SetPersonError('Character not found');
+      } else if (res.status !== 200) {
         throw new Error('Sorry, Error');
-      } else if (res.status == 200) {
+      } else {
         const data = await res.json();
-        this.setState({ info: data, isLoad: false, error: '' });
-        console.log(data);
+        SetPersonInfo(data);
+
+        SetPersonError('');
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        this.setState({ isLoad: false, error: err.message });
+        SetPersonError(err.message);
         console.error('Fetch error:', err);
       }
+    } finally {
+      setIsPersonLoading(false);
     }
-  };
-  componentDidMount() {
-    this.GetPersons(localStorage.getItem('field') || '');
   }
 
-  render() {
-    if (this.state.shouldCrash) {
-      throw new Error('Тестовая ошибка в render()');
+  async function fetchCharactersByQuery({ page, name }: GetPersonsParams) {
+    setIsListLoading(true);
+
+    try {
+      const res = await fetch(
+        `https://rickandmortyapi.com/api/character/?name=${name}&page=${page}`,
+      );
+
+      if (res.status === 404) {
+        SetListInfo({ info: { count: -1, pages: -1 }, results: [] });
+        SetListError('');
+      } else if (res.status !== 200) {
+        throw new Error('Sorry, Error');
+      } else {
+        const data = await res.json();
+        SetListInfo(data);
+        SetListError('');
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        SetListError(err.message);
+        console.error('Fetch error:', err);
+      }
+    } finally {
+      setIsListLoading(false);
     }
-    return (
-      <>
-        <header className="header">
-          <SearchForm ClickButton={this.GetPersons}></SearchForm>
-        </header>
-        <main>
-          <CardList
-            error={this.state.error}
-            isLoad={this.state.isLoad}
-            data={this.state.info}
-          ></CardList>
-          <button
-            className="error-button"
-            onClick={() => this.setState({ shouldCrash: true })}
-          >
-            Вызвать ошибку
-          </button>
-        </main>
-        <footer></footer>
-      </>
-    );
   }
+
+  function handleFetchCharacters({ page, name, id }: GetPersonsParams) {
+    if (id) {
+      fetchCharacterById(id);
+    }
+    if ((page && name) || (name === '' && page)) {
+      fetchCharactersByQuery({ name, page });
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      handleFetchCharacters({
+        id: +id,
+      });
+    }
+  }, [id]);
+  useEffect(() => {
+    handleFetchCharacters({
+      page: page,
+      name: field,
+    });
+  }, [page, field]);
+
+  if (shouldCrash) {
+    throw new Error('Тестовая ошибка в render()');
+  }
+  return (
+    <Layout>
+      <SearchForm></SearchForm>
+      <div className="content-container">
+        <CardList
+          error={listError}
+          isLoad={isListLoading}
+          data={listInfo}
+        ></CardList>
+
+        <Outlet
+          context={{
+            isPersonLoading,
+            personInfo,
+            isDetailVisible,
+            closeDetail: () => setIsDetailVisible(false),
+            personError,
+          }}
+        />
+      </div>
+
+      <Pagination
+        closeDetail={() => setIsDetailVisible(false)}
+        PageNumber={listInfo.info.pages}
+      ></Pagination>
+      <button className="error-button" onClick={() => SetShouldCrash(true)}>
+        Вызвать ошибку
+      </button>
+    </Layout>
+  );
 }
