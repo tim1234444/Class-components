@@ -9,6 +9,7 @@ import type {
   GetPersonsParams,
 } from '../type/type';
 import { useRestoredSearchParamsFromLS } from '../hooks/useRestoreSearchParamsFromLS';
+import Layout from '../components/Layout';
 
 export function RickAndMorty() {
   const { page, id, field } = useRestoredSearchParamsFromLS();
@@ -111,38 +112,33 @@ export function RickAndMorty() {
     throw new Error('Тестовая ошибка в render()');
   }
   return (
-    <>
-      <header className="header">
-        <SearchForm></SearchForm>
-      </header>
-      <main>
-        <div className="content-container">
-          <CardList
-            error={listError}
-            isLoad={isListLoading}
-            data={listInfo}
-          ></CardList>
+    <Layout>
+      <SearchForm></SearchForm>
+      <div className="content-container">
+        <CardList
+          error={listError}
+          isLoad={isListLoading}
+          data={listInfo}
+        ></CardList>
 
-          <Outlet
-            context={{
-              isPersonLoading,
-              personInfo,
-              isDetailVisible,
-              closeDetail: () => setIsDetailVisible(false),
-              personError,
-            }}
-          />
-        </div>
+        <Outlet
+          context={{
+            isPersonLoading,
+            personInfo,
+            isDetailVisible,
+            closeDetail: () => setIsDetailVisible(false),
+            personError,
+          }}
+        />
+      </div>
 
-        <Pagination
-          closeDetail={() => setIsDetailVisible(false)}
-          PageNumber={listInfo.info.pages}
-        ></Pagination>
-        <button className="error-button" onClick={() => SetShouldCrash(true)}>
-          Вызвать ошибку
-        </button>
-      </main>
-      <footer></footer>
-    </>
+      <Pagination
+        closeDetail={() => setIsDetailVisible(false)}
+        PageNumber={listInfo.info.pages}
+      ></Pagination>
+      <button className="error-button" onClick={() => SetShouldCrash(true)}>
+        Вызвать ошибку
+      </button>
+    </Layout>
   );
 }

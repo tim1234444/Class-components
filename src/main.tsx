@@ -5,6 +5,7 @@ import './reset.css';
 import App from './App';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Detail } from './components/RickAndMorty/Detail/Detail';
+import AboutPage from './pages/AboutPage';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />}>
           <Route index element={<Detail />} />
         </Route>
+        <Route path="/about" element={<AboutPage />}></Route>
       </Routes>
     </BrowserRouter>
   </StrictMode>,
