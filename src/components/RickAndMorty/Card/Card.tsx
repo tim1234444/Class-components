@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { useSearchParams } from 'react-router';
-import { FetchContext } from '../../../context/context';
 
 type Props = {
   name: string;
@@ -9,14 +7,12 @@ type Props = {
 };
 export function Card({ name, image, id }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const fetchPerson = useContext(FetchContext);
   const handleClick = () => {
-    console.log(1);
     if (id) {
+      localStorage.setItem('id', String(id));
       const params = new URLSearchParams(searchParams);
       params.set('id', String(id));
       setSearchParams(params);
-      fetchPerson({ id });
     }
   };
   return (

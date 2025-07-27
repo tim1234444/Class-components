@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
-import type { GetPersonsParams } from '../../../type/type';
 
-type Props = {
-  ClickButton: ({ page, name, id }: GetPersonsParams) => void;
-};
-export function SearchForm({ ClickButton }: Props) {
+export function SearchForm() {
   const [, setSearchParams] = useSearchParams();
 
   const [field, SetField] = useState(localStorage.getItem('field') || '');
@@ -21,9 +17,8 @@ export function SearchForm({ ClickButton }: Props) {
         onSubmit={(e) => {
           e.preventDefault();
           localStorage.setItem('field', field);
+
           setSearchParams({ page: '1' });
-          // вызываю ClickButton на случай если page и так равно 1
-          ClickButton({ page: '1', name: field });
         }}
         className="search-form"
         action=""

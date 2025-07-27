@@ -31,7 +31,7 @@ export function Detail() {
           <Spinner></Spinner>
         </div>
       )}
-      {personInfo && !isPersonLoading && (
+      {personInfo && !isPersonLoading && !personError && (
         <div className="character-card">
           <button onClick={closeDetail} className="close-btn">
             <svg

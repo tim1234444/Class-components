@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router';
+import { Outlet } from 'react-router';
 import { CardList } from '../components/RickAndMorty/CardList/CardList';
 import { SearchForm } from '../components/RickAndMorty/Form/Form';
 import { Pagination } from '../components/RickAndMorty/Pagination/Pagination';
@@ -8,10 +8,10 @@ import type {
   FetchPersonData,
   GetPersonsParams,
 } from '../type/type';
-import { FetchContext } from '../context/context';
+import { useRestoredSearchParamsFromLS } from '../hooks/useRestoreSearchParamsFromLS';
 
 export function RickAndMorty() {
-  const [searchParams] = useSearchParams();
+  const { page, id, field } = useRestoredSearchParamsFromLS();
 
   const [personInfo, SetPersonInfo] = useState<FetchPersonData>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
@@ -87,26 +87,25 @@ export function RickAndMorty() {
   function handleFetchCharacters({ page, name, id }: GetPersonsParams) {
     if (id) {
       fetchCharacterById(id);
-    } else {
+    }
+    if ((page && name) || (name === '' && page)) {
       fetchCharactersByQuery({ name, page });
     }
   }
 
   useEffect(() => {
-    console.log(searchParams.get('page'));
-    const page = searchParams.get('page') || '1';
-    const personId = searchParams.get('id');
-
-    handleFetchCharacters({
-      page: page,
-      name: localStorage.getItem('field') || '',
-    });
-    if (personId) {
+    if (id) {
       handleFetchCharacters({
-        id: +personId,
+        id: +id,
       });
     }
-  }, [searchParams.get('page')]);
+  }, [id]);
+  useEffect(() => {
+    handleFetchCharacters({
+      page: page,
+      name: field,
+    });
+  }, [page, field]);
 
   if (shouldCrash) {
     throw new Error('Тестовая ошибка в render()');
@@ -114,17 +113,16 @@ export function RickAndMorty() {
   return (
     <>
       <header className="header">
-        <SearchForm ClickButton={handleFetchCharacters}></SearchForm>
+        <SearchForm></SearchForm>
       </header>
       <main>
         <div className="content-container">
-          <FetchContext value={handleFetchCharacters}>
-            <CardList
-              error={listError}
-              isLoad={isListLoading}
-              data={listInfo}
-            ></CardList>
-          </FetchContext>
+          <CardList
+            error={listError}
+            isLoad={isListLoading}
+            data={listInfo}
+          ></CardList>
+
           <Outlet
             context={{
               isPersonLoading,

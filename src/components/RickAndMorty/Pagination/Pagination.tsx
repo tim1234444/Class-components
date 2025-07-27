@@ -30,7 +30,6 @@ export function Pagination({ closeDetail, PageNumber }: Props) {
     if (currentPage === 1 && currentPage + 2 <= PageNumber) {
       pages.add(currentPage + 2);
     }
-    console.log(PageNumber, currentPage);
     if (PageNumber !== currentPage) {
       pages.add(PageNumber);
     }
@@ -52,6 +51,7 @@ export function Pagination({ closeDetail, PageNumber }: Props) {
             <button
               onClick={() => {
                 closeDetail();
+                localStorage.setItem('page', String(number));
                 setSearchParams({ page: String(number) });
               }}
               className={`pagination__button ${number === currentPage ? 'pagination__button--active' : ''}`}
