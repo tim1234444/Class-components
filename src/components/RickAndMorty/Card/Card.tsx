@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
-import { store } from '../../../store';
 import { push, remove } from '../../../cardsReducer/cardsSlice';
 import type { FetchPersonData } from '../../../type/type';
+import { useDispatch } from 'react-redux';
 
 type Props = {
   item: FetchPersonData;
+  initChecked: boolean;
 };
-export function Card({ item }: Props) {
+export function Card({ item, initChecked }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
+  const [checked, setChecked] = useState(initChecked);
   const handleClick = () => {
     if (item.id) {
       localStorage.setItem('id', String(item.id));
@@ -24,9 +25,9 @@ export function Card({ item }: Props) {
     const checked = e.target.checked;
     setChecked(e.target.checked);
     if (checked) {
-      store.dispatch(push(item));
+      dispatch(push(item));
     } else {
-      store.dispatch(remove(item.id));
+      dispatch(remove(item.id));
     }
   };
   return (

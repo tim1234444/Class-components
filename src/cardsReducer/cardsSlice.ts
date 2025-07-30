@@ -15,5 +15,6 @@ export const cardsSlice = createSlice({
     },
   },
 });
+
 export default cardsSlice.reducer;
 export const { push, remove } = cardsSlice.actions;

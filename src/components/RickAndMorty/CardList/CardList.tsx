@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux';
 import type { FetchListData } from '../../../type/type';
 import { Card } from '../Card/Card';
 import { Spinner } from '../Spinner/Spinner';
+import type { RootState } from '../../../store';
 
 type Props = {
   error: string;
@@ -8,6 +10,9 @@ type Props = {
   isLoad: boolean;
 };
 export function CardList({ error, data, isLoad }: Props) {
+  const selectIds = useSelector((state: RootState) =>
+    state.cards.map((card) => card.id),
+  );
   return (
     <>
       {isLoad && (
@@ -18,7 +23,11 @@ export function CardList({ error, data, isLoad }: Props) {
       {!isLoad && !error && data.results.length > 0 && (
         <ul className="card-list">
           {data.results?.map((item) => (
-            <Card key={item.id} item={item}></Card>
+            <Card
+              key={item.id}
+              item={item}
+              initChecked={selectIds.includes(item.id)}
+            ></Card>
           ))}
         </ul>
       )}
