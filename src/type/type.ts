@@ -8,7 +8,7 @@ export type FetchListData = {
     count: number;
     pages: number;
   };
-  results: CardType[];
+  results: FetchPersonData[];
 };
 export type FetchPersonData = {
   id: number;

@@ -18,12 +18,7 @@ export function CardList({ error, data, isLoad }: Props) {
       {!isLoad && !error && data.results.length > 0 && (
         <ul className="card-list">
           {data.results?.map((item) => (
-            <Card
-              key={item.image}
-              name={item.name}
-              image={item.image}
-              id={item.id}
-            ></Card>
+            <Card key={item.id} item={item}></Card>
           ))}
         </ul>
       )}

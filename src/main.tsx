@@ -7,17 +7,21 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import { Detail } from './components/RickAndMorty/Detail/Detail';
 import AboutPage from './pages/AboutPage/AboutPage';
 import NotFound from './pages/NotFound/NotFound';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Detail />} />
-        </Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Detail />} />
+          </Route>
+          <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>,
 );

@@ -36,10 +36,27 @@ main {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 250px;
+  position: relative;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
+.card__checkbox-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  margin: 0px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  z-index: 1;
+}
 
+.card__checkbox {
+  margin: 0px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
 .card__container:hover {
   transform: scale(1.05);
 }
