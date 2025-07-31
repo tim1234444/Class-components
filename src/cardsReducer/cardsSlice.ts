@@ -13,8 +13,11 @@ export const cardsSlice = createSlice({
     remove: (state, action: PayloadAction<number>) => {
       return state.filter((item) => item.id !== action.payload);
     },
+    removeAll: () => {
+      return [];
+    },
   },
 });
 
 export default cardsSlice.reducer;
-export const { push, remove } = cardsSlice.actions;
+export const { push, remove, removeAll } = cardsSlice.actions;

@@ -1,9 +1,12 @@
 /// <reference types="vitest/globals" />
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Component } from 'react';
 import { RickAndMorty } from '../../../pages/RickAndMorty';
 import { MemoryRouter } from 'react-router';
+import { Provider } from 'react-redux';
+import { store } from '../../../store';
+
 class BrokenComponent extends Component {
   render() {
     throw new Error('Error');
@@ -13,6 +16,7 @@ class BrokenComponent extends Component {
 
 describe('ErrorBoundary', () => {
   beforeEach(() => {
+    cleanup();
     vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
@@ -53,9 +57,11 @@ describe('ErrorBoundary', () => {
     render(
       <MemoryRouter>
         {' '}
-        <ErrorBoundary>
-          <RickAndMorty />
-        </ErrorBoundary>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <RickAndMorty />
+          </ErrorBoundary>
+        </Provider>
       </MemoryRouter>,
     );
 

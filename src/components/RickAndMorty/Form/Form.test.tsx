@@ -1,5 +1,5 @@
 /// <reference types="vitest/globals" />
-import { render, fireEvent, cleanup } from '@testing-library/react';
+import { render, fireEvent, cleanup, screen } from '@testing-library/react';
 
 import { SearchForm } from './Form';
 import { MemoryRouter } from 'react-router';
@@ -19,6 +19,7 @@ describe('SearchForm', () => {
         <SearchForm />
       </MemoryRouter>,
     );
+    expect(mockClickButton).toBeCalled();
     const input = getByRole('textbox') as HTMLInputElement;
     const button = getByRole('button') as HTMLButtonElement;
     expect(input).toBeInTheDocument();
@@ -39,12 +40,12 @@ describe('SearchForm', () => {
   it('renders input with default value from localStorage', () => {
     localStorage.setItem('field', 'default value');
 
-    const { getByRole } = render(
+    render(
       <MemoryRouter>
         <SearchForm />
       </MemoryRouter>,
     );
-    const input = getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByRole('textbox') as HTMLInputElement;
 
     expect(input.value).toBe('default value');
   });

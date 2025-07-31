@@ -359,3 +359,65 @@ main {
   border-radius: 12px;
   width: 100%;
 }
+.bottom-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  color: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-width: 280px;
+  max-width: calc(100% - 2rem);
+  z-index: 1000;
+  animation: fadeSlideUp 0.3s ease-out;
+}
+
+.bottom-bar__info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bottom-bar__icon {
+  color: #00b894;
+  width: 24px;
+  height: 24px;
+}
+
+.bottom-bar__text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.bottom-bar__button {
+  background: #00b894;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.bottom-bar__button:hover {
+  background: #019875;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

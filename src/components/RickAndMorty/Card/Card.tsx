@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { push, remove } from '../../../cardsReducer/cardsSlice';
 import type { FetchPersonData } from '../../../type/type';
@@ -30,6 +30,10 @@ export function Card({ item, initChecked }: Props) {
       dispatch(remove(item.id));
     }
   };
+
+  useEffect(() => {
+    setChecked(initChecked);
+  }, [initChecked]);
   return (
     <li className="card" data-testid="card">
       <div className="card__container" onClick={handleClick}>
