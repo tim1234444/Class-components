@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { push, remove } from '../../../cardsReducer/cardsSlice';
 import type { FetchPersonData } from '../../../type/type';
@@ -9,21 +8,19 @@ type Props = {
   initChecked: boolean;
 };
 export function Card({ item, initChecked }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState(initChecked);
+
   const handleClick = () => {
     if (item.id) {
       localStorage.setItem('id', String(item.id));
-      const params = new URLSearchParams(searchParams);
-      params.set('id', String(item.id));
-      setSearchParams(params);
+      setSearchParams({ id: String(item.id) });
     }
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    setChecked(e.target.checked);
+
     if (checked) {
       dispatch(push(item));
     } else {
@@ -31,9 +28,6 @@ export function Card({ item, initChecked }: Props) {
     }
   };
 
-  useEffect(() => {
-    setChecked(initChecked);
-  }, [initChecked]);
   return (
     <li className="card" data-testid="card">
       <div className="card__container" onClick={handleClick}>
@@ -44,7 +38,7 @@ export function Card({ item, initChecked }: Props) {
           <input
             type="checkbox"
             className="card__checkbox"
-            checked={checked}
+            checked={initChecked}
             onChange={handleCheckboxChange}
             aria-label={`Выбрать карточку ${name}`}
           />

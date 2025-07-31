@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAll } from '../../../cardsReducer/cardsSlice';
 import type { RootState } from '../../../store';
+import { CSVLink } from 'react-csv';
 
 type BottomBarProps = {
   selectedCount: number;
@@ -9,37 +10,22 @@ type BottomBarProps = {
 export function BottomBar({ selectedCount }: BottomBarProps) {
   const dispatch = useDispatch();
   const selectedCards = useSelector((state: RootState) => state.cards);
-  const handleDownloadCsv = () => {
-    if (!selectedCards.length) return;
 
+  if (selectedCount === 0) return null;
+  const handleDownloadCsv = () => {
     const headers = ['Name', 'Description', 'Detail URL'];
+    if (!selectedCards.length) return [headers];
+
     const rows = selectedCards.map((item) => [
       item.name,
       item.status ?? '',
-      `https://example.com/details/${item.id}`,
+      `https://rickandmortyapi.com/${item.id}`,
     ]);
 
-    const delimiter = ';';
-    const csvContent = [headers, ...rows]
-      .map((row) =>
-        row
-          .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
-          .join(delimiter),
-      )
-      .join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${selectedCards.length}_items.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const csvContent = [headers, ...rows];
+    console.log(csvContent);
+    return csvContent;
   };
-
-  if (selectedCount === 0) return null;
-
   return (
     <div className="bottom-bar">
       <p>
@@ -53,9 +39,15 @@ export function BottomBar({ selectedCount }: BottomBarProps) {
       >
         Unselect all
       </button>
-      <button className="bottom-bar__button" onClick={handleDownloadCsv}>
-        Download
-      </button>
+      <CSVLink
+        separator={';'}
+        filename={`${selectedCards.length}_items.csv`}
+        className="bottom-bar__button"
+        data={handleDownloadCsv()}
+      >
+        {' '}
+        Download{' '}
+      </CSVLink>
     </div>
   );
 }

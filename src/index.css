@@ -1,6 +1,9 @@
 main {
   padding: 20px;
 }
+.dark-theme {
+  background-color: #1f1f1f;
+}
 .search-form__input {
   border-radius: 32px;
   border: solid 1px rgb(31, 29, 27);
@@ -77,6 +80,23 @@ main {
   font-weight: 600;
   color: #333;
 }
+.dark-theme .card__container {
+  background: #1e1e1e;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+.dark-theme .card__checkbox-wrapper {
+  background: rgba(30, 30, 30, 0.8);
+}
+
+.dark-theme .card__name {
+  color: #f0f0f0;
+}
+
+.dark-theme .card__content {
+  color: #ccc;
+}
+
 .card-list {
   flex-grow: 2;
   display: grid;
@@ -263,12 +283,34 @@ main {
   top: 6px;
   right: 12px;
 
-  background-color: white;
+  background-color: transparent;
   border: none;
   padding: 6px 12px;
   cursor: pointer;
   border-radius: 4px;
 }
+.dark-theme .character-card {
+  background: #1e1e1e;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  color: #f0f0f0;
+}
+
+.dark-theme .character-details h2 {
+  color: #f0f0f0;
+}
+
+.dark-theme .character-details li {
+  color: #ccc;
+}
+
+.dark-theme .character-details strong {
+  color: #fff;
+}
+
+.dark-theme .close-btn svg line {
+  stroke: #f0f0f0;
+}
+
 .content-container {
   display: flex;
   gap: 10px;
@@ -311,6 +353,24 @@ main {
   font-size: 16px;
   line-height: 1.6;
 }
+.dark-theme .about-container {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.dark-theme .about-title {
+  color: #ffffff;
+}
+
+.dark-theme .about-photo {
+  background-color: #333;
+  color: #aaa;
+}
+
+.dark-theme .about-text {
+  color: #ccc;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -410,6 +470,29 @@ main {
 .bottom-bar__button:hover {
   background: #019875;
 }
+.dark-theme .bottom-bar {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  background: #2c2c2c;
+  color: #e0e0e0;
+  
+}
+
+.dark-theme .bottom-bar__icon {
+  color: #55d9a3; /* светло-зелёный для контраста */
+}
+
+.dark-theme .bottom-bar__text {
+  color: #d0d0d0;
+}
+
+.dark-theme .bottom-bar__button {
+  background: #55d9a3;
+  color: #1e1e1e;
+}
+
+.dark-theme .bottom-bar__button:hover {
+  background: #3dbf85;
+}
 
 @keyframes fadeSlideUp {
   from {
@@ -420,4 +503,18 @@ main {
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+.theme-toggle {
+  cursor: pointer;
+  background: none;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  color: inherit;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }

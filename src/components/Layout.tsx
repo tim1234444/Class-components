@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import { ThemeToggle } from './ThemeButton';
 
 type Props = {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ export default function Layout({ children }: Props) {
       <header>
         <nav className="navbar">
           <div className="navbar-logo">MyApp</div>
+          <ThemeToggle></ThemeToggle>
           <ul className="navbar-links">
             <li>
               <NavLink
