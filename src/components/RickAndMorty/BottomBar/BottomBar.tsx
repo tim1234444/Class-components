@@ -23,7 +23,6 @@ export function BottomBar({ selectedCount }: BottomBarProps) {
     ]);
 
     const csvContent = [headers, ...rows];
-    console.log(csvContent);
     return csvContent;
   };
   return (

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router';
-
+import type { ChangeEvent } from 'react';
 export function SearchForm() {
   const [, setSearchParams] = useSearchParams();
 
   const [field, SetField] = useState(localStorage.getItem('field') || '');
 
-  function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFieldChange(e: ChangeEvent<HTMLInputElement>) {
     SetField(e.target.value);
   }
 

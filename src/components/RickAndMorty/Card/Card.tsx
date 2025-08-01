@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router';
 import { push, remove } from '../../../cardsReducer/cardsSlice';
 import type { FetchPersonData } from '../../../type/type';
 import { useDispatch } from 'react-redux';
-
+import type { ChangeEvent } from 'react';
 type Props = {
   item: FetchPersonData;
   initChecked: boolean;
@@ -18,7 +18,7 @@ export function Card({ item, initChecked }: Props) {
     }
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
 
     if (checked) {
