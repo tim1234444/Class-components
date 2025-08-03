@@ -1,5 +1,11 @@
+* {
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
 main {
   padding: 20px;
+}
+.dark-theme {
+  background-color: #1f1f1f;
 }
 .search-form__input {
   border-radius: 32px;
@@ -36,10 +42,27 @@ main {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 250px;
+  position: relative;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
+.card__checkbox-wrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  margin: 0px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  z-index: 1;
+}
 
+.card__checkbox {
+  margin: 0px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
 .card__container:hover {
   transform: scale(1.05);
 }
@@ -60,6 +83,23 @@ main {
   font-weight: 600;
   color: #333;
 }
+.dark-theme .card__container {
+  background: #1e1e1e;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+.dark-theme .card__checkbox-wrapper {
+  background: rgba(30, 30, 30, 0.8);
+}
+
+.dark-theme .card__name {
+  color: #f0f0f0;
+}
+
+.dark-theme .card__content {
+  color: #ccc;
+}
+
 .card-list {
   flex-grow: 2;
   display: grid;
@@ -138,7 +178,7 @@ main {
 .retry-button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  background-color: #4caf50; /* зелёная */
+  background-color: #4caf50; 
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -246,12 +286,34 @@ main {
   top: 6px;
   right: 12px;
 
-  background-color: white;
+  background-color: transparent;
   border: none;
   padding: 6px 12px;
   cursor: pointer;
   border-radius: 4px;
 }
+.dark-theme .character-card {
+  background: #1e1e1e;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  color: #f0f0f0;
+}
+
+.dark-theme .character-details h2 {
+  color: #f0f0f0;
+}
+
+.dark-theme .character-details li {
+  color: #ccc;
+}
+
+.dark-theme .character-details strong {
+  color: #fff;
+}
+
+.dark-theme .close-btn svg line {
+  stroke: #f0f0f0;
+}
+
 .content-container {
   display: flex;
   gap: 10px;
@@ -294,6 +356,24 @@ main {
   font-size: 16px;
   line-height: 1.6;
 }
+.dark-theme .about-container {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+.dark-theme .about-title {
+  color: #ffffff;
+}
+
+.dark-theme .about-photo {
+  background-color: #333;
+  color: #aaa;
+}
+
+.dark-theme .about-text {
+  color: #ccc;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -341,4 +421,103 @@ main {
   height: 100%;
   border-radius: 12px;
   width: 100%;
+}
+.bottom-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  color: #1e1e1e;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-width: 280px;
+  max-width: calc(100% - 2rem);
+  z-index: 1000;
+  animation: fadeSlideUp 0.3s ease-out;
+}
+
+.bottom-bar__info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bottom-bar__icon {
+  color: #00b894;
+  width: 24px;
+  height: 24px;
+}
+
+.bottom-bar__text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.bottom-bar__button {
+  background: #00b894;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.bottom-bar__button:hover {
+  background: #019875;
+}
+.dark-theme .bottom-bar {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  background: #2c2c2c;
+  color: #e0e0e0;
+  
+}
+
+.dark-theme .bottom-bar__icon {
+  color: #55d9a3; /* светло-зелёный для контраста */
+}
+
+.dark-theme .bottom-bar__text {
+  color: #d0d0d0;
+}
+
+.dark-theme .bottom-bar__button {
+  background: #55d9a3;
+  color: #1e1e1e;
+}
+
+.dark-theme .bottom-bar__button:hover {
+  background: #3dbf85;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.theme-toggle {
+  cursor: pointer;
+  background: none;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  color: inherit;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }

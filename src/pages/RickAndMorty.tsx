@@ -10,32 +10,31 @@ import type {
 } from '../type/type';
 import { useRestoredSearchParamsFromLS } from '../hooks/useRestoreSearchParamsFromLS';
 import Layout from '../components/Layout';
+import { BASE_API_URL } from '../constants';
 
 export function RickAndMorty() {
   const { page, id, field } = useRestoredSearchParamsFromLS();
 
   const [personInfo, SetPersonInfo] = useState<FetchPersonData>();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
-  const [isPersonLoading, setIsPersonLoading] = useState<boolean>(false);
-  const [personError, SetPersonError] = useState<string>('');
+  const [isPersonLoading, setIsPersonLoading] = useState(false);
+  const [personError, SetPersonError] = useState('');
 
-  const [isListLoading, setIsListLoading] = useState<boolean>(false);
+  const [isListLoading, setIsListLoading] = useState(false);
   const [listInfo, SetListInfo] = useState<FetchListData>({
     info: { count: -1, pages: -1 },
     results: [],
   });
-  const [listError, SetListError] = useState<string>('');
+  const [listError, SetListError] = useState('');
 
-  const [shouldCrash, SetShouldCrash] = useState<boolean>(false);
+  const [shouldCrash, SetShouldCrash] = useState(false);
 
   async function fetchCharacterById(id: number) {
     setIsDetailVisible(true);
     setIsPersonLoading(true);
 
     try {
-      const res = await fetch(
-        `https://rickandmortyapi.com/api/character/${id}`,
-      );
+      const res = await fetch(`${BASE_API_URL}${id}`);
 
       if (res.status === 404) {
         SetPersonError('Character not found');
@@ -61,9 +60,7 @@ export function RickAndMorty() {
     setIsListLoading(true);
 
     try {
-      const res = await fetch(
-        `https://rickandmortyapi.com/api/character/?name=${name}&page=${page}`,
-      );
+      const res = await fetch(`${BASE_API_URL}?name=${name}&page=${page}`);
 
       if (res.status === 404) {
         SetListInfo({ info: { count: -1, pages: -1 }, results: [] });
@@ -113,7 +110,7 @@ export function RickAndMorty() {
   }
   return (
     <Layout>
-      <SearchForm></SearchForm>
+      <SearchForm />
       <div className="content-container">
         <CardList
           error={listError}

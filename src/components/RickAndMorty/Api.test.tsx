@@ -4,6 +4,10 @@ import { vi } from 'vitest';
 import createFetchMock from 'vitest-fetch-mock';
 import { mockedData } from '../../__test__/mockedData';
 import { MemoryRouter } from 'react-router';
+import { ThemeContext } from '../../Context/createContext';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
+
 describe('RickAndMorty component', () => {
   const fetchMock = createFetchMock(vi);
 
@@ -25,7 +29,11 @@ describe('RickAndMorty component', () => {
 
     render(
       <MemoryRouter>
-        <RickAndMorty />
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -42,7 +50,11 @@ describe('RickAndMorty component', () => {
 
     render(
       <MemoryRouter>
-        <RickAndMorty />
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -55,7 +67,11 @@ describe('RickAndMorty component', () => {
     fetchMock.mockResponseOnce('', { status: 404 });
     render(
       <MemoryRouter>
-        <RickAndMorty />
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -65,7 +81,11 @@ describe('RickAndMorty component', () => {
     fetchMock.mockResponseOnce('', { status: 404 });
     render(
       <MemoryRouter>
-        <RickAndMorty />
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -90,7 +110,11 @@ describe('RickAndMorty component', () => {
 
     render(
       <MemoryRouter initialEntries={['/?id=1']}>
-        <RickAndMorty />
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
       </MemoryRouter>,
     );
 
