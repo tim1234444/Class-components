@@ -5,12 +5,9 @@ import { SearchForm } from './Form';
 import { MemoryRouter } from 'react-router';
 
 describe('SearchForm', () => {
-  const mockClickButton = vi.fn();
-
   beforeEach(() => {
     localStorage.clear();
     cleanup();
-    mockClickButton.mockClear();
   });
 
   it('render input and button', () => {
@@ -19,7 +16,6 @@ describe('SearchForm', () => {
         <SearchForm />
       </MemoryRouter>,
     );
-    expect(mockClickButton).toBeCalled();
     const input = getByRole('textbox') as HTMLInputElement;
     const button = getByRole('button') as HTMLButtonElement;
     expect(input).toBeInTheDocument();

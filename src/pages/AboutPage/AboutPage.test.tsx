@@ -2,11 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import AboutPage from './AboutPage';
 import { MemoryRouter } from 'react-router';
+import { ThemeContext } from '../../Context/createContext';
 describe('AboutPage', () => {
   it('renders main heading and content with links', () => {
     render(
       <MemoryRouter>
-        <AboutPage />
+        <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+          <AboutPage />
+        </ThemeContext>
       </MemoryRouter>,
     );
 

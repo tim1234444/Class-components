@@ -3,11 +3,15 @@ import { render, screen } from '@testing-library/react';
 import { CardList } from './CardList';
 import { mockedData } from '../../../__test__/mockedData';
 import { MemoryRouter } from 'react-router';
+import { Provider } from 'react-redux';
+import { store } from '../../../store';
 describe('CardList', () => {
   it('Renders correct number of items when data is provided', () => {
     const { getAllByTestId } = render(
       <MemoryRouter>
-        <CardList isLoad={false} error="" data={mockedData} />
+        <Provider store={store}>
+          <CardList isLoad={false} error="" data={mockedData} />
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -18,11 +22,13 @@ describe('CardList', () => {
   it('Displays "no results" message when data array is empty', () => {
     render(
       <MemoryRouter>
-        <CardList
-          isLoad={false}
-          error=""
-          data={{ info: { count: -1, pages: -1 }, results: [] }}
-        ></CardList>
+        <Provider store={store}>
+          <CardList
+            isLoad={false}
+            error=""
+            data={{ info: { count: -1, pages: -1 }, results: [] }}
+          ></CardList>
+        </Provider>
       </MemoryRouter>,
     );
     const errorElement = screen.getByText('There is nothing here');
@@ -33,11 +39,13 @@ describe('CardList', () => {
 
   it('Shows loading state while fetching data', () => {
     render(
-      <CardList
-        isLoad={true}
-        error=""
-        data={{ info: { count: -1, pages: -1 }, results: [] }}
-      ></CardList>,
+      <Provider store={store}>
+        <CardList
+          isLoad={true}
+          error=""
+          data={{ info: { count: -1, pages: -1 }, results: [] }}
+        ></CardList>
+      </Provider>,
     );
     const loader = screen.getByTestId('loader');
     expect(loader).toBeInTheDocument();
@@ -46,7 +54,9 @@ describe('CardList', () => {
   it('Correctly displays item names and descriptions', () => {
     const { getAllByTestId } = render(
       <MemoryRouter>
-        <CardList isLoad={false} error="" data={mockedData} />
+        <Provider store={store}>
+          <CardList isLoad={false} error="" data={mockedData} />
+        </Provider>
       </MemoryRouter>,
     );
 
@@ -58,7 +68,9 @@ describe('CardList', () => {
 
   it('Displays error message when API call fails', () => {
     render(
-      <CardList isLoad={false} error="Failed to fetch" data={mockedData} />,
+      <Provider store={store}>
+        <CardList isLoad={false} error="Failed to fetch" data={mockedData} />
+      </Provider>,
     );
 
     const errorElement = screen.getByText('Failed to fetch');

@@ -6,6 +6,7 @@ import { RickAndMorty } from '../../../pages/RickAndMorty';
 import { MemoryRouter } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from '../../../store';
+import { ThemeContext } from '../../../Context/createContext';
 
 class BrokenComponent extends Component {
   render() {
@@ -59,7 +60,9 @@ describe('ErrorBoundary', () => {
         {' '}
         <Provider store={store}>
           <ErrorBoundary>
-            <RickAndMorty />
+            <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+              <RickAndMorty />
+            </ThemeContext>
           </ErrorBoundary>
         </Provider>
       </MemoryRouter>,
@@ -78,9 +81,13 @@ describe('ErrorBoundary', () => {
     render(
       <MemoryRouter>
         {' '}
-        <ErrorBoundary>
-          <RickAndMorty />
-        </ErrorBoundary>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+              <RickAndMorty />
+            </ThemeContext>
+          </ErrorBoundary>
+        </Provider>
       </MemoryRouter>,
     );
 

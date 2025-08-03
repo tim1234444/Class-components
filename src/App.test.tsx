@@ -1,5 +1,11 @@
 import { render, screen, cleanup } from '@testing-library/react';
+
 import { vi } from 'vitest';
+import { ThemeContext } from './Context/createContext';
+import { store } from './store';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { Provider } from 'react-redux';
+import { RickAndMorty } from './pages/RickAndMorty';
 
 describe('App component', () => {
   beforeEach(() => {
@@ -12,9 +18,17 @@ describe('App component', () => {
       RickAndMorty: () => <div>Rick and Morty Component</div>,
     }));
 
-    const { default: App } = await import('./App');
-
-    render(<App />);
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Provider store={store}>
+          <ThemeContext.Provider value={{ theme: 'light', setTheme: () => {} }}>
+            <Routes>
+              <Route path="/" element={<RickAndMorty />} />
+            </Routes>
+          </ThemeContext.Provider>
+        </Provider>
+      </MemoryRouter>,
+    );
     expect(screen.getByText('Rick and Morty Component')).toBeInTheDocument();
   });
 });

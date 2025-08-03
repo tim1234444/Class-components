@@ -1,9 +1,9 @@
-export const mockedData = {
+import type { FetchListData } from '../type/type';
+
+export const mockedData: FetchListData = {
   info: {
     count: 59,
     pages: 3,
-    next: 'https://rickandmortyapi.com/api/character/?page=2&name=de',
-    prev: null,
   },
   results: [
     {

@@ -4,6 +4,7 @@ import { Card } from '../Card/Card';
 import { Spinner } from '../Spinner/Spinner';
 import type { RootState } from '../../../store';
 import { BottomBar } from '../BottomBar/BottomBar';
+import { createSelector } from '@reduxjs/toolkit';
 
 type Props = {
   error: string;
@@ -11,9 +12,11 @@ type Props = {
   isLoad: boolean;
 };
 export function CardList({ error, data, isLoad }: Props) {
-  const selectIds = useSelector((state: RootState) =>
-    state.cards.map((card) => card.id),
-  );
+  const selectIds = (state: RootState) => state.cards;
+  const selectActiveIds = createSelector([selectIds], (cards) => {
+    return cards.map((card) => card.id);
+  });
+  const activeIds = useSelector(selectActiveIds);
 
   return (
     <>
@@ -29,7 +32,7 @@ export function CardList({ error, data, isLoad }: Props) {
               <Card
                 key={item.id}
                 item={item}
-                initChecked={selectIds.includes(item.id)}
+                initChecked={activeIds.includes(item.id)}
               ></Card>
             ))}
           </ul>
@@ -45,7 +48,7 @@ export function CardList({ error, data, isLoad }: Props) {
           <h1>There is nothing here</h1>
         </div>
       )}
-      <BottomBar selectedCount={selectIds.length} />
+      <BottomBar selectedCount={activeIds.length} />
     </>
   );
 }
