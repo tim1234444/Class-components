@@ -521,3 +521,36 @@ main {
 .theme-toggle:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.card__functional{
+  display: flex;
+      position: absolute;
+}
+.refresh-btn {
+  background-color: #4cafef; 
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: white;
+ margin-left: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.refresh-btn:hover {
+  background-color: #3a9cdc;
+}
+
+.refresh-btn:active {
+  transform: scale(0.96);
+}
+
+.refresh-btn svg {
+  width: 16px;
+  height: 16px;
+}

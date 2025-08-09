@@ -28,6 +28,7 @@ export function RickAndMorty() {
     data: listInfo,
     error: listError,
     isFetching: isListLoading,
+    refetch,
   } = useFetchCharactersByNameAndPageQuery({ name: field, page: page });
 
   useEffect(() => {
@@ -79,6 +80,14 @@ export function RickAndMorty() {
       ></Pagination>
       <button className="error-button" onClick={() => SetShouldCrash(true)}>
         Вызвать ошибку
+      </button>
+      <button
+        onClick={() => {
+          refetch();
+        }}
+        className="refresh-btn"
+      >
+        new request
       </button>
     </Layout>
   );
