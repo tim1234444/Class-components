@@ -554,3 +554,6 @@ main {
   width: 16px;
   height: 16px;
 }
+.main-container {
+  min-height: 100vh;
+}
