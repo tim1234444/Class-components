@@ -25,13 +25,13 @@ describe('CardList', () => {
         <Provider store={store}>
           <CardList
             isLoad={false}
-            error=""
+            error={{ status: 404 }}
             data={{ info: { count: -1, pages: -1 }, results: [] }}
           ></CardList>
         </Provider>
       </MemoryRouter>,
     );
-    const errorElement = screen.getByText('There is nothing here');
+    const errorElement = screen.getByText('Nothing found');
     const list = screen.queryByRole('list');
     expect(errorElement).toBeInTheDocument();
     expect(list).not.toBeInTheDocument();
@@ -69,11 +69,15 @@ describe('CardList', () => {
   it('Displays error message when API call fails', () => {
     render(
       <Provider store={store}>
-        <CardList isLoad={false} error="Failed to fetch" data={mockedData} />
+        <CardList
+          isLoad={false}
+          error={{ status: 'FETCH_ERROR' }}
+          data={mockedData}
+        />
       </Provider>,
     );
 
-    const errorElement = screen.getByText('Failed to fetch');
+    const errorElement = screen.getByText('Ошибка: FETCH_ERROR');
     const list = screen.queryByRole('list');
     expect(errorElement).toBeInTheDocument();
     expect(list).not.toBeInTheDocument();

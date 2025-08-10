@@ -20,30 +20,30 @@ describe('Detail component', () => {
   it('shows error message if personError exists and is not loading', () => {
     mockedUseOutletContext.mockReturnValue({
       isDetailVisible: true,
-      personError: 'Something went wrong',
+      personError: { status: 404 },
       isPersonLoading: false,
     });
 
     render(<Detail />);
-    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+    expect(screen.getByText('Nothing found')).toBeInTheDocument();
   });
 
   it('shows spinner when loading', () => {
     mockedUseOutletContext.mockReturnValue({
       isDetailVisible: true,
       personError: '',
-      isPersonLoading: true,
+      isPersonFetching: true,
     });
 
     render(<Detail />);
-    expect(screen.getByTestId('loader')).toBeInTheDocument(); // предполагается, что у Spinner стоит role="status"
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
   it('renders character details when data is available', () => {
     mockedUseOutletContext.mockReturnValue({
       isDetailVisible: true,
       personError: '',
-      isPersonLoading: false,
+      isPersonFetching: false,
       closeDetail: vi.fn(),
       personInfo: {
         id: 1,
@@ -77,7 +77,7 @@ describe('Detail component', () => {
     mockedUseOutletContext.mockReturnValue({
       isDetailVisible: true,
       personError: '',
-      isPersonLoading: false,
+      isPersonFetching: false,
       closeDetail: closeFn,
       personInfo: {
         id: 1,

@@ -36,7 +36,6 @@ export function RickAndMorty() {
       (isPersonFetching && !isDetailVisible && id !== '') ||
       (!isPersonFetching && !isPersonLoading && !isDetailVisible && id !== '')
     ) {
-      console.log(isPersonFetching);
       setIsDetailVisible(true);
     }
   }, [id]);
