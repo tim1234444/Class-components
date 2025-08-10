@@ -5,13 +5,15 @@ import { Spinner } from '../Spinner/Spinner';
 import type { RootState } from '../../../store';
 import { BottomBar } from '../BottomBar/BottomBar';
 import { createSelector } from '@reduxjs/toolkit';
+import { useTextError } from '../../../hooks/useTextError';
 
 type Props = {
-  error: string;
+  error: unknown;
   data: FetchListData;
   isLoad: boolean;
 };
 export function CardList({ error, data, isLoad }: Props) {
+  const errorText = useTextError(error);
   const selectIds = (state: RootState) => state.cards;
   const selectActiveIds = createSelector([selectIds], (cards) => {
     return cards.map((card) => card.id);
@@ -25,6 +27,7 @@ export function CardList({ error, data, isLoad }: Props) {
           <Spinner></Spinner>
         </div>
       )}
+
       {!isLoad && !error && data.results.length > 0 && (
         <>
           <ul className="card-list">
@@ -40,14 +43,10 @@ export function CardList({ error, data, isLoad }: Props) {
       )}
       {error && !isLoad && (
         <div role="error" className="error-container">
-          <h1>{error}</h1>
+          <h1>{errorText}</h1>
         </div>
       )}
-      {!isLoad && !error && data.results.length === 0 && (
-        <div role="error" className="error-container">
-          <h1>There is nothing here</h1>
-        </div>
-      )}
+
       <BottomBar selectedCount={activeIds.length} />
     </>
   );

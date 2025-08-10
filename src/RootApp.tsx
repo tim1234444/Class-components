@@ -14,21 +14,23 @@ export function RootApp() {
     localStorage.getItem('app-theme') || 'light',
   );
   useEffect(() => {
-    document.documentElement.classList.add(`${theme}-theme`);
-  }, []);
-
+    localStorage.setItem('app-theme', theme);
+  }, [theme]);
   return (
     <ErrorBoundary>
       <Provider store={store}>
         <BrowserRouter>
           <ThemeContext value={{ theme, setTheme }}>
-            <Routes>
-              <Route path="/" element={<RickAndMorty />}>
-                <Route index element={<Detail />} />
-              </Route>
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className={`main-container ${theme}-theme`}>
+              {' '}
+              <Routes>
+                <Route path="/" element={<RickAndMorty />}>
+                  <Route index element={<Detail />} />
+                </Route>
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
           </ThemeContext>
         </BrowserRouter>
       </Provider>

@@ -1,37 +1,39 @@
 import { useOutletContext } from 'react-router';
 import { Spinner } from '../Spinner/Spinner';
 import type { FetchPersonData } from '../../../type/type';
+import { useTextError } from '../../../hooks/useTextError';
 
 export function Detail() {
   const {
-    isPersonLoading,
+    isPersonFetching,
     personInfo,
     isDetailVisible,
     closeDetail,
     personError,
   } = useOutletContext<{
-    isPersonLoading: boolean;
+    isPersonFetching: boolean;
     personInfo?: FetchPersonData;
     isDetailVisible: boolean;
     closeDetail: () => void;
-    personError: string;
+    personError: unknown;
   }>();
-
+  const errorText = useTextError(personError);
   if (!isDetailVisible) return null;
+
   return (
     <>
-      {personError && !isPersonLoading && (
+      {personError && !isPersonFetching && (
         <div className="character-card">
-          <h1>{personError}</h1>
+          <h1>{errorText}</h1>
         </div>
       )}
-      {isPersonLoading && (
+      {isPersonFetching && (
         <div className="character-card">
           {' '}
           <Spinner></Spinner>
         </div>
       )}
-      {personInfo && !isPersonLoading && !personError && (
+      {personInfo && !isPersonFetching && !personError && (
         <div className="character-card">
           <button onClick={closeDetail} className="close-btn">
             <svg

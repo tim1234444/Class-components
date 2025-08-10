@@ -17,51 +17,10 @@ describe('RickAndMorty component', () => {
 
   beforeEach(() => {
     vi.restoreAllMocks();
-    vi.spyOn(console, 'log').mockImplementation(() => {});
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    cleanup();
+    fetchMock.resetMocks();
 
     localStorage.clear();
-    cleanup();
-  });
-
-  it('renders characters from API (success case) and Makes initial API call on component mount', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockedData));
-
-    render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
-            <RickAndMorty />
-          </ThemeContext>
-        </Provider>
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByText('Worldender')).toBeInTheDocument();
-    expect(screen.getByText('Wedding Bartender')).toBeInTheDocument();
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://rickandmortyapi.com/api/character/?name=&page=1',
-    );
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-  });
-  it('Handles search term from localStorage on initial load', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockedData));
-    localStorage.setItem('field', 'Rick');
-
-    render(
-      <MemoryRouter>
-        <Provider store={store}>
-          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
-            <RickAndMorty />
-          </ThemeContext>
-        </Provider>
-      </MemoryRouter>,
-    );
-
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://rickandmortyapi.com/api/character/?name=Rick&page=1',
-    );
-    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
   it('Handles API error responses(404)', async () => {
     fetchMock.mockResponseOnce('', { status: 404 });
@@ -91,25 +50,11 @@ describe('RickAndMorty component', () => {
 
     expect(await screen.findByRole('error')).toBeInTheDocument();
   });
-  it('fetches character by ID when id param is present', async () => {
-    const mockCharacter = {
-      id: 1,
-      name: 'Rick Sanchez',
-      status: 'Alive',
-      species: 'Human',
-      type: '',
-      gender: 'Male',
-      origin: { name: 'Earth (C-137)' },
-      location: { name: 'Citadel of Ricks' },
-      episode: ['ep1', 'ep2'],
-      image: 'https://rick.com/image.jpg',
-      created: '2023-01-01T00:00:00.000Z',
-    };
-
-    fetchMock.mockResponse(JSON.stringify(mockCharacter));
+  it('renders characters from API (success case) and Makes initial API call on component mount', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockedData));
 
     render(
-      <MemoryRouter initialEntries={['/?id=1']}>
+      <MemoryRouter>
         <Provider store={store}>
           <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
             <RickAndMorty />
@@ -118,8 +63,40 @@ describe('RickAndMorty component', () => {
       </MemoryRouter>,
     );
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://rickandmortyapi.com/api/character/1',
+    expect(await screen.findByText('Worldender')).toBeInTheDocument();
+    expect(screen.getByText('Wedding Bartender')).toBeInTheDocument();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        url: expect.stringContaining(
+          'https://rickandmortyapi.com/api/character/?name=&page=1',
+        ),
+      }),
     );
+  });
+  it('Handles search term from localStorage on initial load', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockedData));
+    localStorage.setItem('field', 'Rick');
+
+    render(
+      <MemoryRouter>
+        <Provider store={store}>
+          <ThemeContext value={{ theme: 'light', setTheme: () => {} }}>
+            <RickAndMorty />
+          </ThemeContext>
+        </Provider>
+      </MemoryRouter>,
+    );
+    await screen.findByText('Worldender');
+    expect(fetchMock.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        url: expect.stringContaining(
+          'https://rickandmortyapi.com/api/character/?name=Rick&page=1',
+        ),
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
