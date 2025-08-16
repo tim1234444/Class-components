@@ -1,20 +1,25 @@
-import { useSearchParams } from 'react-router';
 import { push, remove } from '../../../cardsReducer/cardsSlice';
 import type { FetchPersonData } from '../../../type/type';
 import { useDispatch } from 'react-redux';
 import type { ChangeEvent } from 'react';
+import Image from 'next/image';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 type Props = {
   item: FetchPersonData;
   initChecked: boolean;
 };
 export function Card({ item, initChecked }: Props) {
-  const [, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch();
 
   const handleClick = () => {
     if (item.id) {
       localStorage.setItem('id', String(item.id));
-      setSearchParams({ id: String(item.id) });
+      const newParams = new URLSearchParams(searchParams?.toString());
+      newParams.set('id', String(item.id));
+      replace(`${pathname}?${newParams.toString()}`);
     }
   };
 
@@ -43,13 +48,18 @@ export function Card({ item, initChecked }: Props) {
             aria-label={`Выбрать карточку ${name}`}
           />
         </div>
+
         {item.image && (
-          <img
-            data-testid="image"
-            src={item.image}
-            alt={item.name}
-            className="card__image"
-          />
+          <div className="image-container">
+            <Image
+              style={{ width: '100%' }}
+              fill={true}
+              data-testid="image"
+              src={item.image}
+              alt={item.name}
+              className="card__image"
+            />
+          </div>
         )}
         <div className="card__content">
           <p data-testid="description" className="card__name">

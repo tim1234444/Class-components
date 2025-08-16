@@ -1,10 +1,19 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router';
-import type { ChangeEvent } from 'react';
-export function SearchForm() {
-  const [, setSearchParams] = useSearchParams();
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-  const [field, SetField] = useState(localStorage.getItem('field') || '');
+import type { ChangeEvent } from 'react';
+import React from 'react';
+export function SearchForm() {
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
+
+  const [field, SetField] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('field') || '';
+    SetField(saved);
+  }, []);
 
   function handleFieldChange(e: ChangeEvent<HTMLInputElement>) {
     SetField(e.target.value);
@@ -20,8 +29,9 @@ export function SearchForm() {
             localStorage.setItem('field', field);
             localStorage.setItem('page', '1');
             localStorage.setItem('id', '');
-
-            setSearchParams({ page: '1' });
+            const newParams = new URLSearchParams(searchParams?.toString());
+            newParams.set('page', '1');
+            replace(`${pathname}?${newParams.toString()}`);
           }}
           className="search-form"
           action=""

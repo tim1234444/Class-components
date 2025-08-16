@@ -1,22 +1,20 @@
-import { useOutletContext } from 'react-router';
 import { Spinner } from '../Spinner/Spinner';
 import type { FetchPersonData } from '../../../type/type';
 import { useTextError } from '../../../hooks/useTextError';
-
-export function Detail() {
-  const {
-    isPersonFetching,
-    personInfo,
-    isDetailVisible,
-    closeDetail,
-    personError,
-  } = useOutletContext<{
-    isPersonFetching: boolean;
-    personInfo?: FetchPersonData;
-    isDetailVisible: boolean;
-    closeDetail: () => void;
-    personError: unknown;
-  }>();
+type Props = {
+  isPersonFetching: boolean;
+  personInfo?: FetchPersonData;
+  isDetailVisible: boolean;
+  closeDetail: () => void;
+  personError: unknown;
+};
+export function Detail({
+  isPersonFetching,
+  personInfo,
+  isDetailVisible,
+  closeDetail,
+  personError,
+}: Props) {
   const errorText = useTextError(personError);
   if (!isDetailVisible) return null;
 
