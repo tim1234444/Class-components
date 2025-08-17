@@ -1,8 +1,8 @@
 'use client';
-
-import Link from 'next/link';
+import { Link } from '../i18n/navigation';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { href } from 'react-router';
 
 export default function NavList() {
   const pathname = usePathname();
@@ -12,14 +12,14 @@ export default function NavList() {
     { href: '/', label: t('home') },
     { href: '/about', label: t('about') },
   ];
-
+  const finalPath = '/' + pathname.split('/').slice(2).join('/');
   return (
     <ul className="navbar-links">
       {links.map((link) => (
         <li key={link.href}>
           <Link
             href={link.href}
-            className={pathname === link.href ? 'active' : ''}
+            className={finalPath === link.href ? 'active' : ''}
           >
             {link.label}
           </Link>
