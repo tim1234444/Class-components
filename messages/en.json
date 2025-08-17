@@ -8,4 +8,9 @@
     "label": "Change language",
     "locale": "{locale, select, ru {Русский} en {🇺🇸 English} other {Unknown}}"
   }
+  ,
+  "Navbar":{
+    "home": "Main",
+    "about": "About"
+  }
 }

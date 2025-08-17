@@ -1,3 +1,4 @@
+'use client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -31,6 +32,8 @@ export function SearchForm() {
             localStorage.setItem('id', '');
             const newParams = new URLSearchParams(searchParams?.toString());
             newParams.set('page', '1');
+            if (field) newParams.set('q', field);
+
             replace(`${pathname}?${newParams.toString()}`);
           }}
           className="search-form"

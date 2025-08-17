@@ -7,5 +7,9 @@
   "LocaleSwitcher": {
     "label": "Сменить язык",
     "locale": "{locale, select, ru {ru Русский} en {🇺🇸 English} other {Unknown}}"
+  },
+  "Navbar":{
+    "home": "Главная",
+    "about": "Информация об авторе"
   }
 }

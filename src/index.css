@@ -349,6 +349,7 @@ main {
   border-radius: 12px;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
   color: #777;
   font-size: 14px;

@@ -5,7 +5,7 @@ export default function AboutPage() {
       <h1 className="about-title">About Me</h1>
       <div className="about-content">
         <div className="about-photo">
-          <Image src="/face.jpg" alt="" />
+          <Image src="/face.jpg" alt="" fill={true} />
         </div>
         <div className="about-text">
           <p>
