@@ -1,28 +1,35 @@
+'use client';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 export function useRestoredSearchParamsFromLS() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  let page = '1';
+  let id = '';
+  let field = '';
 
-  const restored = {
-    page: searchParams.get('page') || localStorage.getItem('page') || '1',
-    id: searchParams.get('id') || localStorage.getItem('id') || '',
-    field: localStorage.getItem('field') || '',
-  };
-
+  if (typeof window !== 'undefined') {
+    page = searchParams?.get('page') || localStorage.getItem('page') || '1';
+    id = searchParams?.get('id') || localStorage.getItem('id') || '';
+    field = localStorage.getItem('field') || '';
+  }
   useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
+    const newParams = new URLSearchParams(searchParams?.toString());
 
-    if (!searchParams.has('page') && restored.page) {
-      newParams.set('page', restored.page);
+    if (!searchParams?.get('page') && page) {
+      newParams.set('page', page);
     }
 
-    if (!searchParams.has('id') && restored.id) {
-      newParams.set('id', restored.id);
+    if (!searchParams?.get('id') && id) {
+      newParams.set('id', id);
     }
 
-    setSearchParams(newParams);
+    if (newParams.toString() !== searchParams?.toString()) {
+      replace(`${pathname}?${newParams.toString()}`);
+    }
   }, []);
 
-  return restored;
+  return { page, id, field };
 }

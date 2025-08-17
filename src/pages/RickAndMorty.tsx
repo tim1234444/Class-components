@@ -1,17 +1,23 @@
+'use client';
 import { useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router';
+import { usePathname, useRouter } from 'next/navigation';
 import { CardList } from '../components/RickAndMorty/CardList/CardList';
 import { SearchForm } from '../components/RickAndMorty/Form/Form';
 import { Pagination } from '../components/RickAndMorty/Pagination/Pagination';
 import { useRestoredSearchParamsFromLS } from '../hooks/useRestoreSearchParamsFromLS';
-import Layout from '../components/Layout';
 import {
   useFetchCharacterByIdQuery,
   useFetchCharactersByNameAndPageQuery,
 } from '../CreateApi';
+import { Detail } from '../components/RickAndMorty/Detail/Detail';
+import { useTranslations } from 'next-intl';
 
 export function RickAndMorty() {
-  const [, setSearchParams] = useSearchParams();
+  const t = useTranslations('HomePage');
+
+  const pathname = usePathname();
+
+  const { replace } = useRouter();
   const { page, id, field } = useRestoredSearchParamsFromLS();
   const [isDetailVisible, setIsDetailVisible] = useState(false);
   const [shouldCrash, SetShouldCrash] = useState(false);
@@ -30,7 +36,6 @@ export function RickAndMorty() {
     isFetching: isListLoading,
     refetch,
   } = useFetchCharactersByNameAndPageQuery({ name: field, page: page });
-
   useEffect(() => {
     if (
       (isPersonFetching && !isDetailVisible && id !== '') ||
@@ -44,7 +49,7 @@ export function RickAndMorty() {
     throw new Error('Тестовая ошибка в render()');
   }
   return (
-    <Layout>
+    <>
       <SearchForm />
       <div className="content-container">
         <CardList
@@ -58,19 +63,17 @@ export function RickAndMorty() {
           }
         ></CardList>
 
-        <Outlet
-          context={{
-            isPersonFetching,
-            personInfo,
-            isDetailVisible,
-            closeDetail: () => {
-              localStorage.setItem('id', '');
-              setSearchParams({});
-              setIsDetailVisible(false);
-            },
-            personError,
+        <Detail
+          isPersonFetching={isPersonFetching}
+          personInfo={personInfo}
+          isDetailVisible={isDetailVisible}
+          closeDetail={() => {
+            localStorage.setItem('id', '');
+            replace(`${pathname}`);
+            setIsDetailVisible(false);
           }}
-        />
+          personError={personError}
+        ></Detail>
       </div>
 
       <Pagination
@@ -78,7 +81,7 @@ export function RickAndMorty() {
         PageNumber={listInfo?.info?.pages ?? -1}
       ></Pagination>
       <button className="error-button" onClick={() => SetShouldCrash(true)}>
-        Вызвать ошибку
+        {t('Error')}
       </button>
       <button
         onClick={() => {
@@ -86,8 +89,8 @@ export function RickAndMorty() {
         }}
         className="refresh-btn"
       >
-        new request
+        {t('Request')}
       </button>
-    </Layout>
+    </>
   );
 }

@@ -1,5 +1,5 @@
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
 
 type Props = {
   closeDetail: () => void;
@@ -7,9 +7,11 @@ type Props = {
 };
 
 export function Pagination({ closeDetail, PageNumber }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+  const pathname = usePathname();
 
-  const page = parseInt(searchParams.get('page') || '1', 10);
+  const page = parseInt(searchParams?.get('page') || '1', 10);
   const currentPage = isNaN(page) ? 1 : page;
 
   const [numbers, SetNumbers] = useState<number[]>([]);
@@ -52,7 +54,9 @@ export function Pagination({ closeDetail, PageNumber }: Props) {
               onClick={() => {
                 closeDetail();
                 localStorage.setItem('page', String(number));
-                setSearchParams({ page: String(number) });
+                const newParams = new URLSearchParams(searchParams?.toString());
+                newParams.set('page', String(number));
+                replace(`${pathname}?${newParams.toString()}`);
               }}
               className={`pagination__button ${number === currentPage ? 'pagination__button--active' : ''}`}
               key={number}
