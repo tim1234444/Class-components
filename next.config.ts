@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   distDir: './dist',
   images: {
+    domains: ['rickandmortyapi.com'],
     unoptimized: true,
   },
 };

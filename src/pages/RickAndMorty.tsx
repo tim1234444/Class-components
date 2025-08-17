@@ -36,7 +36,6 @@ export function RickAndMorty() {
     isFetching: isListLoading,
     refetch,
   } = useFetchCharactersByNameAndPageQuery({ name: field, page: page });
-
   useEffect(() => {
     if (
       (isPersonFetching && !isDetailVisible && id !== '') ||
