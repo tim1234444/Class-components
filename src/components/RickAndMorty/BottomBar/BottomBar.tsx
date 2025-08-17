@@ -13,7 +13,8 @@ export function BottomBar({ selectedCount }: BottomBarProps) {
 
   if (selectedCount === 0) return null;
   const handleDownloadCsv = async () => {
-    const blob = await generateCsv(selectedCards);
+    const csvContent = await generateCsv(selectedCards);
+    const blob = new Blob([csvContent], { type: 'text/csv' });
 
     const url = URL.createObjectURL(blob);
 

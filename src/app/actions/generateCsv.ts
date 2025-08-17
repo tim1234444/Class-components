@@ -28,6 +28,5 @@ export async function generateCsv(cards: FetchPersonData[]) {
   const csvContent = [headers, ...rows]
     .map((row) => row.map(escape).join(';'))
     .join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-  return blob;
+  return csvContent;
 }
