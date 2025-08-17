@@ -1,26 +1,24 @@
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+
 export default function AboutPage() {
+  const t = useTranslations('About');
+
   return (
     <div className="about-container">
-      <h1 className="about-title">About Me</h1>
+      <h1 className="about-title">{t('aboutTitle')}</h1>
       <div className="about-content">
         <div className="about-photo">
           <Image src="/face.jpg" alt="" fill={true} />
         </div>
         <div className="about-text">
+          <p>{t('p1')}</p>
+          <p>{t('p2')}</p>
+          <p>{t('p3')}</p>
           <p>
-            Hello everyone! My name is Timofey. I’m 18 years old and I live in
-            Tatarstan, Russia.
-          </p>
-          <p>
-            I became interested in programming when I was 14. Since then, I’ve
-            been working hard to achieve my goal of becoming the best developer.
-          </p>
-          <p>I hope I can make it!</p>
-          <p>
-            Learn more about the course:{' '}
+            {t('p4')}:{' '}
             <a
-              href="https://rs.school/courses/reactjs"
+              href={t('links.course')}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -28,9 +26,9 @@ export default function AboutPage() {
             </a>
           </p>
           <p>
-            My GitHub:{' '}
+            {t('p5')}:{' '}
             <a
-              href="https://github.com/tim1234444"
+              href={t('links.github')}
               target="_blank"
               rel="noopener noreferrer"
             >
