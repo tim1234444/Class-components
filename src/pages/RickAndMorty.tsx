@@ -10,8 +10,11 @@ import {
   useFetchCharactersByNameAndPageQuery,
 } from '../CreateApi';
 import { Detail } from '../components/RickAndMorty/Detail/Detail';
+import { useTranslations } from 'next-intl';
 
 export function RickAndMorty() {
+  const t = useTranslations('HomePage');
+
   const pathname = usePathname();
 
   const { replace } = useRouter();
@@ -79,7 +82,7 @@ export function RickAndMorty() {
         PageNumber={listInfo?.info?.pages ?? -1}
       ></Pagination>
       <button className="error-button" onClick={() => SetShouldCrash(true)}>
-        Вызвать ошибку
+        {t('Error')}
       </button>
       <button
         onClick={() => {
@@ -87,7 +90,7 @@ export function RickAndMorty() {
         }}
         className="refresh-btn"
       >
-        new request
+        {t('Request')}
       </button>
     </>
   );

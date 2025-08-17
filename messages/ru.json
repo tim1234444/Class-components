@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "Error": "Вызвать ошибку",
+    "Request": "Новый запрос",
+    "logo": "Рик и Морти"
+  },
+  "LocaleSwitcher": {
+    "label": "Сменить язык",
+    "locale": "{locale, select, ru {ru Русский} en {🇺🇸 English} other {Unknown}}"
+  }
+}
