@@ -1,14 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import './reset.css'
-import App from './App';
+import Counter from './App';
 
 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     
-    <App />
+    <Counter name="Sara" age = '19'/>
   </StrictMode>,
 );
