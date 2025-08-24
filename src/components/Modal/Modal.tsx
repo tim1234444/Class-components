@@ -1,0 +1,32 @@
+import { createContext, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+
+type Props = {
+  children: React.ReactNode;
+  isOpen: boolean;
+  handleClose: () => void;
+};
+export const ModalContext = createContext<() => void>(() => {});
+export function Modal({ children, isOpen, handleClose }: Props) {
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [handleClose]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div  data-testid="modal-content" className="modal-overlay" onClick={handleClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={handleClose}>
+          ×
+        </button>
+        <ModalContext value={handleClose}>{children}</ModalContext>
+      </div>
+    </div>,
+    document.getElementById('portal-root') as HTMLElement,
+  );
+}
