@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 type FormData = {
-  id: number
+  id: number;
   name: string;
   age: number;
   email: string;
@@ -13,8 +13,7 @@ type FormData = {
   country: string;
 };
 
-
-const initialState: FormData[] = []
+const initialState: FormData[] = [];
 
 export const FormsSlice = createSlice({
   name: 'forms',
@@ -23,7 +22,6 @@ export const FormsSlice = createSlice({
     addForm: (state, action: PayloadAction<FormData>) => {
       state.push(action.payload);
     },
-
   },
 });
 

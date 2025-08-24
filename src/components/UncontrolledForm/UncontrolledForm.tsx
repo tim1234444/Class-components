@@ -60,8 +60,8 @@ export default function UncontrolledForm() {
       formData.entries(),
     ) as unknown as DataType;
     values.terms = values.terms ? 'true' : 'false';
+    
     const isValidate = await Validate(values);
-
     if (isValidate) {
       const base64 = await fileToBase64(values.avatar);
       const FinalData = {

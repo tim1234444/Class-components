@@ -19,7 +19,7 @@ export function Modal({ children, isOpen, handleClose }: Props) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="modal-overlay" onClick={handleClose}>
+    <div  data-testid="modal-content" className="modal-overlay" onClick={handleClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={handleClose}>
           ×

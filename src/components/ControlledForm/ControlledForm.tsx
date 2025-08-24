@@ -213,6 +213,7 @@ export default function ControlledForm() {
               render={({ field }) => (
                 <>
                   <input
+                    id="b-bvatar"
                     type="file"
                     accept="image/png,image/jpeg"
                     onChange={(e) => {
