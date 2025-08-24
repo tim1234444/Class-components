@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 type Props = {
@@ -6,6 +6,7 @@ type Props = {
   isOpen: boolean;
   handleClose: () => void;
 };
+export const ModalContext = createContext<() => void>(() => {});
 export function Modal({ children, isOpen, handleClose }: Props) {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -23,8 +24,8 @@ export function Modal({ children, isOpen, handleClose }: Props) {
         <button className="modal-close-btn" onClick={handleClose}>
           ×
         </button>
-        {children}
-      </div>  
+        <ModalContext value={handleClose}>{children}</ModalContext>
+      </div>
     </div>,
     document.getElementById('portal-root') as HTMLElement,
   );

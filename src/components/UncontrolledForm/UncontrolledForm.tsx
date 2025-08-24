@@ -1,103 +1,37 @@
-import { useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { InferType } from 'yup';
-import { object, string, number, ValidationError, ref, mixed } from 'yup';
-import { SaveUncontrolledForm } from '../../Reducer/FormsSlice';
+import { ValidationError } from 'yup';
 import type { RootState } from '../../store';
+import { checkPasswordStrength } from '../../utils/password';
+import { fileToBase64 } from '../../utils/file';
+import { useCountrySchema } from '../../utils/schemas';
+import { ModalContext } from '../Modal/Modal';
+import { addForm } from '../../Reducer/FormsSlice';
 export default function UncontrolledForm() {
+  const close = useContext(ModalContext);
   const countries = useSelector(
     (state: RootState) => state.countries.countries,
   );
-  const [filtered, setFiltered] = useState<string[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleInput = () => {
-    const val = inputRef.current?.value ?? '';
-    const countriesFilter = countries.filter((c) =>
-      c.toLowerCase().includes(val.toLowerCase()),
-    );
-    setFiltered(countriesFilter);
-  };
-
-  const handleSelect = (country: string) => {
-    if (inputRef.current) {
-      inputRef.current.value = country;
-    }
-    setFiltered([]);
-  };
+  const schema = useCountrySchema();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [passwordStrength, setPasswordStrength] = useState('—');
-  const checkPasswordStrength = (password: string) => {
-    let score = 0;
-    if (/(?=.*\d)/.test(password)) score++;
-    if (/(?=.*[a-z])/.test(password)) score++;
-    if (/(?=.*[A-Z])/.test(password)) score++;
-    if (/(?=.*[@$!%*?&])/.test(password)) score++;
 
-    switch (score) {
-      case 4:
-        return 'Strong';
-      case 3:
-        return 'Medium';
-      case 2:
-        return 'Weak';
-      default:
-        return 'Very Weak';
-    }
+  type DataType = {
+    id?: number;
+    name: string;
+    age: number;
+    email: string;
+    emailConfirm: string;
+    password: string;
+    passwordRepeat: string;
+    gender: string;
+    terms: string;
+    avatar: File;
+    country: string;
   };
 
-  const schema = object({
-    name: string()
-      .required('Name is required')
-      .matches(/^[A-ZА-Я][a-zA-Zа-яА-Я]*$/, 'First letter must be uppercase'),
-
-    age: number()
-      .required('Age is required')
-      .min(0, 'Age cannot be negative')
-      .typeError('Age must be a number'),
-
-    email: string().required('Email is required').email('Invalid email'),
-
-    emailConfirm: string()
-      .required('Confirm email is required')
-      .oneOf([ref('email')], 'Emails must match'),
-
-    password: string()
-      .required('Password is required')
-      .matches(/(?=.*\d)/, 'Must contain at least one digit')
-      .matches(/(?=.*[a-z])/, 'Must contain at least one lowercase letter')
-      .matches(/(?=.*[A-Z])/, 'Must contain at least one uppercase letter')
-      .matches(
-        /(?=.*[@$!%*?&])/,
-        'Must contain at least one special character',
-      ),
-
-    passwordRepeat: string()
-      .required('Please repeat the password')
-      .oneOf([ref('password')], 'Passwords must match'),
-
-    gender: string()
-      .required('Gender is required')
-      .oneOf(['male', 'female', 'other'], 'Invalid gender'),
-
-    terms: string().required('You must accept'),
-
-    avatar: mixed<File>().required('Avatar is required'),
-    country: string().required('Country is required'),
-  });
-
-  type FormDataType = InferType<typeof schema>;
-  function fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function Validate(formData: FormDataType) {
+  async function Validate(formData: DataType) {
     try {
       await schema.validate(formData, { abortEarly: false });
       return true;
@@ -124,7 +58,8 @@ export default function UncontrolledForm() {
 
     const values = Object.fromEntries(
       formData.entries(),
-    ) as unknown as FormDataType;
+    ) as unknown as DataType;
+    values.terms = values.terms ? 'true' : 'false';
     const isValidate = await Validate(values);
 
     if (isValidate) {
@@ -132,9 +67,12 @@ export default function UncontrolledForm() {
       const FinalData = {
         ...values,
         avatar: base64,
+        id: Math.random(),
       };
 
-      dispatch(SaveUncontrolledForm(FinalData));
+      dispatch(addForm(FinalData));
+      setErrors({});
+      close();
     }
   };
 
@@ -151,7 +89,7 @@ export default function UncontrolledForm() {
               id="a-name"
               name="name"
               type="text"
-              placeholder="John"
+              placeholder="Тимоха"
               autoComplete="given-name"
             />
             <div className="error">{errors.name || '\u00A0'}</div>
@@ -270,18 +208,12 @@ export default function UncontrolledForm() {
               type="text"
               list="a-country-list"
               placeholder="Select a country"
-              ref={inputRef}
-              onChange={handleInput}
             />
-            {filtered.length > 0 && (
-              <ul className="suggestions">
-                {filtered.map((c) => (
-                  <li key={c} onClick={() => handleSelect(c)}>
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <datalist id="a-country-list">
+              {countries.map((country) => (
+                <option key={country} value={country}></option>
+              ))}
+            </datalist>
 
             <div className="error">{errors.country || '\u00A0'}</div>
           </div>

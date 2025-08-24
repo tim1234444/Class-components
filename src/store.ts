@@ -4,7 +4,8 @@ import {
     type ThunkAction,
   } from '@reduxjs/toolkit';
 import FormsSlice from './Reducer/FormsSlice';
-import countriesSlice from './Reducer/countriesSlice';
+import countriesSlice from './Reducer/CountriesSlice';
+
   
   export const store = configureStore({
     reducer: {

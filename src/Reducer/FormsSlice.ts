@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-type FormDataType = {
+type FormData = {
+  id: number
   name: string;
   age: number;
   email: string;
@@ -11,19 +12,21 @@ type FormDataType = {
   avatar: string;
   country: string;
 };
+
+
+const initialState: FormData[] = []
+
 export const FormsSlice = createSlice({
   name: 'forms',
-  initialState: {
-    UncontrolledForm: {},
-    ControlledForm: {},
-  },
+  initialState,
   reducers: {
-    SaveUncontrolledForm: (state, action: PayloadAction<FormDataType>) => {
-      state.UncontrolledForm = action.payload;
+    addForm: (state, action: PayloadAction<FormData>) => {
+      state.push(action.payload);
     },
+
   },
 });
 
-export const { SaveUncontrolledForm } = FormsSlice.actions;
+export const { addForm } = FormsSlice.actions;
 
 export default FormsSlice.reducer;
